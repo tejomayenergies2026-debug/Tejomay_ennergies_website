@@ -103,6 +103,8 @@ export default function HeroSection({
         }}
         className="hero-video-bg"
       >
+        <source src="/solar-bg-instant.webm" type="video/webm" />
+        <source src="/solar-bg-instant.mp4" type="video/mp4" />
         <source src="/solar-bg.mp4" type="video/mp4" />
       </video>
 
