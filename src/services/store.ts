@@ -43,7 +43,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     description: "High-efficiency monocrystalline rooftop panels designed to slash home electricity bills by up to 90% while providing seamless grid backup.",
     capacityRange: "3 kW - 10 kW Systems",
     estimatedSavings: "Save up to ₹85,000 / year",
-    image: "/solar2.avif",
+    image: "/solar_res_1.jpg",
     features: ["All-Black Aesthetic Panels", "25-Year Performance Warranty", "Integrated Smart App Telemetry", "Zero-Down Financing Available"]
   },
   {
@@ -54,7 +54,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     description: "Commercial-grade solar infrastructure engineered to optimize operational overheads and deliver massive tax depreciation benefits.",
     capacityRange: "25 kW - 250 kW Systems",
     estimatedSavings: "Save up to ₹4,500,000 / year",
-    image: "/solar3.avif",
+    image: "/solar_res_2.jpg",
     features: ["Bifacial Glass-on-Glass Tech", "Peak Shaving Battery Integration", "Net Metering Assistance", "Accelerated 40% Tax Depreciation"]
   },
   {
@@ -65,7 +65,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     description: "Rugged, high-capacity solar setups built for continuous industrial power loads, factory roofs, and cold storage facilities.",
     capacityRange: "250 kW - 5 MW Industrial Plants",
     estimatedSavings: "Save up to ₹25,000,000 / year",
-    image: "/solar4.avif",
+    image: "/solar_ind_1.jpg",
     features: ["Heavy Corrosion-Resistant Mounts", "HV/LV Transformer Setup", "24/7 AI Load Management", "Guaranteed 99.4% Uptime"]
   },
   {
@@ -76,7 +76,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     description: "Complete Engineering, Procurement, and Construction services. From 3D shading simulations to DISCOM grid approvals and power sync.",
     capacityRange: "Custom Turnkey Projects",
     estimatedSavings: "100% Guaranteed Grid Approval",
-    image: "/solar2.avif",
+    image: "/solar_res_3.jpg",
     features: ["3D Drone Shading Analysis", "Tier-1 Equipment Sourcing", "Government Approval Handling", "Turnkey Commissioning in 30 Days"]
   },
   {
@@ -87,7 +87,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
     description: "Proactive preventive maintenance, automated robotic panel cleaning, thermal hotspot scans, and 24/7 remote performance monitoring.",
     capacityRange: "Annual Subscription Contracts",
     estimatedSavings: "Boost Generation Yield by 18%",
-    image: "/solar3.avif",
+    image: "/solar_ind_3.jpg",
     features: ["Quarterly Thermal Camera Scans", "Robotic & De-ionized Water Washing", "Inverter Firmware & Hardware Checks", "2-Hour Emergency On-Site SLA"]
   }
 ];
@@ -99,7 +99,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Priya Sundaram",
     clientRole: "Homeowner",
     companyOrLocation: "Vasant Vihar, New Delhi",
-    photo: "/solar1_custom.jpeg",
+    photo: "/solar_res_1.jpg",
     projectCapacity: "8 kW Residential Array",
     quote: "The all-black Tejomay Core panels look stunning on our villa roof. The mobile app lets us track our real-time generation. Our summer AC power bills have dropped to zero!",
     rating: 5,
@@ -111,7 +111,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Ananya Deshmukh",
     clientRole: "Villa Owner",
     companyOrLocation: "Baner, Pune",
-    photo: "/solar3.avif",
+    photo: "/solar_res_2.jpg",
     projectCapacity: "12 kW Hybrid Solar Setup",
     quote: "Tejomay handled all DISCOM net-metering approvals effortlessly. Our home electricity cost reduced by 92% with instant grid backup support during power cuts.",
     rating: 5,
@@ -123,7 +123,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Karan Singhania",
     clientRole: "Homeowner",
     companyOrLocation: "Jubilee Hills, Hyderabad",
-    photo: "/solar4.avif",
+    photo: "/solar_res_3.jpg",
     projectCapacity: "10 kW Smart Solar Grid",
     quote: "Exceptional build quality and premium panel aesthetics. The payback period calculated by their tool was spot on at 3.2 years. Highly recommended!",
     rating: 5,
@@ -137,7 +137,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Rajesh Malhotra",
     clientRole: "Director of Facilities",
     companyOrLocation: "SustainVolt Industrial Park, Gurgaon",
-    photo: "/solar1_custom.jpeg",
+    photo: "/solar_ind_1.jpg",
     projectCapacity: "150 kW Commercial Rooftop",
     quote: "Switching our industrial manufacturing facility to Tejomay solar panels reduced our monthly electricity expense from ₹4.2 Lakhs down to ₹45,000! Their EPC team completed grid synchronization 10 days ahead of schedule.",
     rating: 5,
@@ -149,7 +149,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Vikramaditya Shah",
     clientRole: "Managing Director",
     companyOrLocation: "Apex Cold Storage & Logistics, Mumbai",
-    photo: "/solar3.avif",
+    photo: "/solar_ind_2.jpg",
     projectCapacity: "500 kW High-Yield Solar Grid",
     quote: "Tejomay's AMC team performs quarterly thermal diagnostics and automated washing. Our generation output has stayed consistently 15% above predicted baseline for 3 years straight.",
     rating: 5,
@@ -161,7 +161,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     clientName: "Meera Kapoor",
     clientRole: "VP of Operations",
     companyOrLocation: "GreenLogistics Hub, Ahmedabad",
-    photo: "/solar4.avif",
+    photo: "/solar_ind_3.jpg",
     projectCapacity: "300 kW Commercial Rooftop",
     quote: "Massive corporate tax depreciation benefits combined with 99.4% guaranteed power uptime. Tejomay is the benchmark for industrial solar engineering in India.",
     rating: 5,
@@ -201,7 +201,17 @@ export const getStoredServices = (): ServiceItem[] => {
     return DEFAULT_SERVICES;
   }
   try {
-    return JSON.parse(saved);
+    const items: ServiceItem[] = JSON.parse(saved);
+    // Upgrade any old low-res image references to crisp HD versions
+    const upgraded = items.map(item => {
+      if (!item.image || item.image.includes('.avif') || item.image.includes('solar1_custom.jpeg')) {
+        const matchingDefault = DEFAULT_SERVICES.find(d => d.id === item.id);
+        return { ...item, image: matchingDefault ? matchingDefault.image : '/solar_res_1.jpg' };
+      }
+      return item;
+    });
+    localStorage.setItem("tejomay_services", JSON.stringify(upgraded));
+    return upgraded;
   } catch {
     return DEFAULT_SERVICES;
   }
@@ -219,7 +229,17 @@ export const getStoredTestimonials = (): TestimonialItem[] => {
     return DEFAULT_TESTIMONIALS;
   }
   try {
-    return JSON.parse(saved);
+    const items: TestimonialItem[] = JSON.parse(saved);
+    // Upgrade any old low-res photo references to crisp HD versions
+    const upgraded = items.map(item => {
+      if (!item.photo || item.photo.includes('.avif') || item.photo.includes('solar1_custom.jpeg')) {
+        const matchingDefault = DEFAULT_TESTIMONIALS.find(d => d.id === item.id);
+        return { ...item, photo: matchingDefault ? matchingDefault.photo : '/solar_res_1.jpg' };
+      }
+      return item;
+    });
+    localStorage.setItem("tejomay_testimonials", JSON.stringify(upgraded));
+    return upgraded;
   } catch {
     return DEFAULT_TESTIMONIALS;
   }
@@ -232,3 +252,4 @@ export const saveStoredTestimonials = (items: TestimonialItem[]): void => {
 export const getStoredFounders = (): FounderItem[] => {
   return DEFAULT_FOUNDERS;
 };
+

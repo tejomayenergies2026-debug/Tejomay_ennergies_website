@@ -43,7 +43,7 @@ export default function PotentialSection() {
         </div>
 
         {/* 3. 2 Hub Location Cards Grid (Larger Dimension Cards, No Animation) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '2.25rem', maxWidth: '1240px', margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))', gap: '2.25rem', maxWidth: '1240px', margin: '0 auto' }}>
           
           {/* CARD 1: NEW DELHI NCR */}
           <div style={{
@@ -127,7 +127,7 @@ export default function PotentialSection() {
               </div>
 
               {/* Action Buttons Row */}
-              <div style={{ display: 'flex', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => openMaps('Level 4, Barakhamba Tower, Connaught Place, New Delhi - 110001')}
                   style={{

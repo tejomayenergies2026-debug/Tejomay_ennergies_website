@@ -292,6 +292,7 @@ body {
 /* PERFECT 3-IN-A-ROW HORIZONTAL CARDS (400px height, 360px max width) */
 .flip-card-container {
   perspective: 1200px;
+  -webkit-perspective: 1200px;
   cursor: pointer;
   height: 400px !important;
   min-height: 400px !important;
@@ -299,6 +300,7 @@ body {
   width: 100%;
   max-width: 370px;
   margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
 }
 
 .flip-card-inner {
@@ -310,10 +312,12 @@ body {
   text-align: left;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .flip-card-container.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .flip-card-front, .flip-card-back {
@@ -327,6 +331,8 @@ body {
   backface-visibility: hidden;
   border-radius: 28px;
   overflow: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .flip-card-front {
@@ -334,14 +340,25 @@ body {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
 }
 
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
 .flip-card-back {
   background: #ffffff;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(0);
+  -webkit-transform: rotateY(180deg) translateZ(0);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
-/* Hover Transparent Badge on Front Image */
+/* Hover Transparent Badge on Front Image — always visible on touch, hover on desktop */
 .front-hover-badge {
   opacity: 0;
   transform: translateY(-8px);
@@ -351,6 +368,14 @@ body {
 .flip-card-container:hover .front-hover-badge {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* On touch devices, always show the badge */
+@media (hover: none) {
+  .front-hover-badge {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 }
 
 /* 3D Perspective Card Swap Container */
@@ -385,5 +410,195 @@ body {
   .grid-2 {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+}
+
+/* ============================================================
+   CALCULATOR SIDE TAB & DRAWER (Mobile-Responsive)
+   ============================================================ */
+.calc-side-tab {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  background: #6BAE23;
+  color: #0b131f;
+  border: none;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  padding: 1.1rem 0.65rem;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  box-shadow: -8px 0 30px rgba(68, 217, 68, 0.5);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.3s ease;
+  z-index: 45;
+}
+
+.calc-drawer {
+  position: absolute;
+  top: 4.5rem;
+  right: 3.5rem;
+  z-index: 42;
+  width: clamp(330px, 410px, 88vw);
+  max-height: calc(100% - 6rem);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+/* ============================================================
+   NAVBAR: Desktop pill shown by default; mobile FAB hidden by default
+   ============================================================ */
+.navbar-desktop-pill { display: block; }
+.navbar-mobile-fab {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  background: rgba(11, 19, 31, 0.92);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   MISSION SECTION HEADER GRID
+   ============================================================ */
+.mission-header-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 3rem;
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet & below (≤ 900px) */
+@media (max-width: 900px) {
+  .section-dark,
+  .section-sand,
+  .section-sky {
+    padding: 4rem 1.25rem;
+  }
+  .mission-header-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Mobile (≤ 768px) */
+@media (max-width: 768px) {
+
+  /* ── Container ── */
+  .container { padding: 0 0.25rem; }
+
+  /* ── Sections ── */
+  .section-dark,
+  .section-sand,
+  .section-sky {
+    padding: 3.5rem 1rem;
+  }
+
+  /* ── Navbar: hide desktop pill, show mobile FAB ── */
+  .navbar-desktop-pill  { display: none !important; }
+  .navbar-mobile-fab    { display: flex !important; }
+
+  /* ── Hero ── */
+  #hero {
+    padding-top: 7rem !important;
+  }
+
+  /* Calculator side-tab: smaller on mobile */
+  .calc-side-tab {
+    padding: 0.8rem 0.45rem;
+    font-size: 0.68rem;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  /* Calculator drawer: full-width bottom sheet on mobile */
+  .calc-drawer {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-height: 80vh !important;
+    border-radius: 24px 24px 0 0 !important;
+    z-index: 200 !important;
+    transform: none !important;
+    transition: opacity 0.35s ease !important;
+  }
+
+  /* ── Grids ── */
+  .grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Flip Cards ── */
+  .flip-card-container,
+  .flip-card-inner,
+  .flip-card-front,
+  .flip-card-back {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+
+  /* ── Offerings section pillars ── */
+  #services > .container > div > div {
+    padding: 1.5rem !important;
+  }
+
+  /* ── Potential section action buttons ── */
+  .potential-action-row { flex-direction: column !important; }
+  .potential-action-row button { flex: 1 !important; width: 100%; }
+
+  /* ── Mission header ── */
+  .mission-header-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* Small mobile (≤ 480px) */
+@media (max-width: 480px) {
+  .section-dark,
+  .section-sand,
+  .section-sky {
+    padding: 3rem 0.85rem;
+  }
+  .flip-card-container,
+  .flip-card-inner,
+  .flip-card-front,
+  .flip-card-back {
+    height: 320px !important;
+    min-height: 320px !important;
+    max-height: 320px !important;
   }
 }

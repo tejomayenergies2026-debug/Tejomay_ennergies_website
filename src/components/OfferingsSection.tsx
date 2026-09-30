@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getStoredServices, ServiceItem } from '../services/store';
 
 interface OfferingsSectionProps {
@@ -9,8 +9,21 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [activeSolarTab, setActiveSolarTab] = useState<'residential' | 'commercial' | 'industrial'>('residential');
   
-  // Hover State for Accordion Expansion on Stacked Cards
+  // Hover State for Accordion Expansion on Stacked Cards (Desktop)
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+
+  // Tap State for Accordion Expansion on Stacked Cards (Mobile)
+  const [tappedCardId, setTappedCardId] = useState<string | null>(null);
+
+  // Detect if the user is on a mobile / touch device
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Modal State for Expanded Specification Details
   const [selectedModalCard, setSelectedModalCard] = useState<ServiceItem | null>(null);
@@ -31,23 +44,34 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   };
 
   const getAvifFallback = (cat: string) => {
-    if (cat === 'residential' || cat === 'epc') return '/solar2.avif';
-    if (cat === 'commercial' || cat === 'amc') return '/solar3.avif';
-    return '/solar4.avif';
+    if (cat === 'residential') return '/solar_res_1.jpg';
+    if (cat === 'commercial') return '/solar_res_2.jpg';
+    if (cat === 'industrial') return '/solar_ind_1.jpg';
+    if (cat === 'epc') return '/solar_res_3.jpg';
+    return '/solar_ind_3.jpg';
   };
 
   // -------------------------------------------------------------------------
-  // HELPER STACKED CARD RENDERER (Full-Cover Photo in Collapsed State, Expands on Hover)
+  // HELPER STACKED CARD RENDERER
+  // Desktop: Expands on Hover | Mobile: Expands on Tap
   // -------------------------------------------------------------------------
   const renderStackedSmallCard = (card: ServiceItem, isExpanded: boolean, isCompressed: boolean, currentCategory: string) => {
+    const handleCardInteraction = () => {
+      if (isMobile) {
+        // Toggle tap on mobile
+        setTappedCardId(prev => prev === card.id ? null : card.id);
+      }
+    };
+
     return (
       <div 
         key={card.id}
-        onMouseEnter={() => setHoveredCardId(card.id)}
-        onMouseLeave={() => setHoveredCardId(null)}
+        onMouseEnter={() => { if (!isMobile) setHoveredCardId(card.id); }}
+        onMouseLeave={() => { if (!isMobile) setHoveredCardId(null); }}
+        onClick={handleCardInteraction}
         style={{
-          flex: isExpanded ? '2.5' : '1',
-          transition: 'flex 0.62s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.62s ease, padding 0.62s ease',
+          flex: isMobile ? 'none' : (isExpanded ? '2.5' : '1'),
+          transition: 'flex 0.62s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.62s ease, padding 0.62s ease, max-height 0.62s cubic-bezier(0.16, 1, 0.3, 1)',
           background: '#f8fafc',
           borderRadius: '20px',
           padding: isExpanded ? '1.1rem' : '0.6rem',
@@ -59,7 +83,13 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
           position: 'relative',
           boxShadow: isExpanded ? '0 15px 35px rgba(0,0,0,0.14)' : 'none',
           willChange: 'flex',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          // Mobile: fixed heights instead of flex accordion
+          ...(isMobile ? {
+            width: '100%',
+            minHeight: isExpanded ? '340px' : '180px',
+            maxHeight: isExpanded ? '420px' : '180px',
+          } : {})
         }}
       >
         {/* Card Background / Full Cover Image in Collapsed State */}
@@ -156,6 +186,66 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   };
 
   // -------------------------------------------------------------------------
+  // MOBILE FULL CARD RENDERER — simple readable card, no accordion
+  // -------------------------------------------------------------------------
+  const renderMobileFullCard = (card: ServiceItem, currentCategory: string) => (
+    <div key={card.id} style={{
+      background: '#f8fafc',
+      borderRadius: '18px',
+      overflow: 'hidden',
+      border: '1px solid rgba(11,19,31,0.08)',
+      boxShadow: '0 4px 18px rgba(0,0,0,0.07)'
+    }}>
+      {/* Image */}
+      <div style={{ position: 'relative', height: '180px', width: '100%' }}>
+        <img src={card.image || getAvifFallback(currentCategory)} alt={card.title}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(11,19,31,0.82) 0%, transparent 65%)' }} />
+        <div style={{ position: 'absolute', bottom: '0.75rem', left: '0.85rem', right: '0.85rem' }}>
+          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#fff', background: '#0b131f', padding: '0.2rem 0.55rem', borderRadius: '4px' }}>{card.capacityRange}</span>
+          <h4 style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', marginTop: '0.2rem', fontFamily: 'var(--font-outfit)', lineHeight: 1.2 }}>{card.title}</h4>
+        </div>
+      </div>
+      {/* Body */}
+      <div style={{ padding: '1rem' }}>
+        <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0b131f' }}>{card.tagline}</span>
+        <p style={{ color: '#475569', fontSize: '0.82rem', marginTop: '0.3rem', lineHeight: 1.45, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{card.description}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.3rem', margin: '0.6rem 0' }}>
+          {card.features?.slice(0, 4).map((feat, idx) => (
+            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#1e293b', fontSize: '0.73rem', fontWeight: 600 }}>
+              <span style={{ color: '#0b131f', fontWeight: 800 }}>✓</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{feat}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.65rem', borderTop: '1px solid rgba(11,19,31,0.08)', gap: '0.5rem' }}>
+          <div>
+            <span style={{ fontSize: '0.62rem', color: '#64748b' }}>Savings / SLA</span>
+            <div style={{ color: '#0b131f', fontWeight: 800, fontSize: '0.9rem' }}>{card.estimatedSavings}</div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            <button onClick={() => setSelectedModalCard(card)}
+              style={{ background: '#fff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.4rem 0.7rem', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              Details 🔍
+            </button>
+            {currentCategory === 'epc' && onOpenEpcDetailsPage ? (
+              <button onClick={onOpenEpcDetailsPage}
+                style={{ background: '#0b131f', color: '#fff', border: 'none', padding: '0.4rem 0.7rem', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                View ↗
+              </button>
+            ) : (
+              <button onClick={() => handleWhatsApp(card.title)} className="btn-lime"
+                style={{ padding: '0.4rem 0.7rem', fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
+                Book ↗
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // -------------------------------------------------------------------------
   // REUSABLE DYNAMIC CARD LAYOUT ENGINE (1, 2, 3, 4 CARDS)
   // -------------------------------------------------------------------------
   const renderDynamicCardsEngine = (matchingCards: ServiceItem[], currentCategory: string) => {
@@ -163,6 +253,15 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
       return (
         <div style={{ textAlign: 'center', padding: '3rem', background: '#f8fafc', borderRadius: '16px', color: '#64748b' }}>
           No cards configured for this category yet. Add cards via Admin Panel.
+        </div>
+      );
+    }
+
+    // MOBILE: render ALL card counts (1, 2, 3, 4+ cards) as clean full-width stacked cards
+    if (isMobile) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
+          {matchingCards.map(card => renderMobileFullCard(card, currentCategory))}
         </div>
       );
     }
@@ -297,12 +396,22 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
       );
     }
 
-    // 3 CARDS -> 2 SMALL STACKED LEFT + 1 LARGE RIGHT (230PX IMAGE)
+    // 3 CARDS -> 2 SMALL STACKED LEFT + 1 LARGE RIGHT (desktop) / simple stack (mobile)
     if (matchingCards.length === 3) {
       const card1 = matchingCards[0];
       const card2 = matchingCards[1];
       const card3 = matchingCards[2];
 
+      // MOBILE: render all 3 as simple full cards
+      if (isMobile) {
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {[card1, card2, card3].map(card => renderMobileFullCard(card, currentCategory))}
+          </div>
+        );
+      }
+
+      // DESKTOP: original 2-col accordion layout
       return (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.75rem', height: '540px', overflow: 'hidden' }}>
           {/* LEFT COLUMN: 2 STACKED FULL COVER PHOTO CARDS */}
@@ -311,7 +420,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
             {renderStackedSmallCard(card2, hoveredCardId === card2.id, hoveredCardId === card1.id, currentCategory)}
           </div>
 
-          {/* RIGHT COLUMN: 1 LARGE CARD EQUIVALENT TO COMBINED HEIGHT */}
+          {/* RIGHT COLUMN: 1 LARGE CARD */}
           <div style={{
             background: '#f8fafc',
             borderRadius: '20px',
@@ -343,7 +452,6 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 <p style={{ color: '#334155', fontSize: '0.8rem', marginTop: '0.25rem', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {card3.description}
                 </p>
-
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.35rem', margin: '0.65rem 0' }}>
                   {card3.features?.slice(0, 4).map((feat, idx) => (
                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#1e293b', fontSize: '0.74rem', fontWeight: 600 }}>
@@ -353,7 +461,6 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                   ))}
                 </div>
               </div>
-
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.5rem', borderTop: '1px solid rgba(11, 19, 31, 0.08)', flexShrink: 0 }}>
                 <div>
                   <span style={{ fontSize: '0.65rem', color: '#64748b' }}>Savings / SLA</span>
@@ -370,21 +477,29 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
       );
     }
 
-    // 4 CARDS (4+ CARDS) -> TWIN STACKED COLUMNS WITH FULL COVER IMAGE COLLAPSED STATE
+
+    // 4 CARDS (4+ CARDS) -> TWIN STACKED COLUMNS (desktop) / simple stack (mobile)
     const card1 = matchingCards[0];
     const card2 = matchingCards[1];
     const card3 = matchingCards[2];
     const card4 = matchingCards[3];
 
+    // MOBILE: render all 4 as simple full cards
+    if (isMobile) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {[card1, card2, card3, card4].map(card => renderMobileFullCard(card, currentCategory))}
+        </div>
+      );
+    }
+
+    // DESKTOP: Twin stacked columns with hover-to-expand
     return (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.75rem', height: '540px', overflow: 'hidden' }}>
-        {/* LEFT COLUMN: CARD 1 (TOP) + CARD 3 (BOTTOM) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '100%', overflow: 'hidden' }}>
           {renderStackedSmallCard(card1, hoveredCardId === card1.id, hoveredCardId === card3.id, currentCategory)}
           {renderStackedSmallCard(card3, hoveredCardId === card3.id, hoveredCardId === card1.id, currentCategory)}
         </div>
-
-        {/* RIGHT COLUMN: CARD 2 (TOP) + CARD 4 (BOTTOM) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '100%', overflow: 'hidden' }}>
           {renderStackedSmallCard(card2, hoveredCardId === card2.id, hoveredCardId === card4.id, currentCategory)}
           {renderStackedSmallCard(card4, hoveredCardId === card4.id, hoveredCardId === card2.id, currentCategory)}
@@ -399,7 +514,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   const amcServices = services.filter(s => s.category === 'amc');
 
   return (
-    <section id="services" style={{ background: '#44D944', padding: '5.5rem 1.5rem', position: 'relative' }}>
+    <section id="services" style={{ background: '#8CC63F', padding: 'clamp(3rem, 5.5vw, 5.5rem) clamp(0.75rem, 3vw, 1.5rem)', position: 'relative' }}>
       <div className="container">
         
         {/* Left-Aligned Subtle 'Our Services' Heading */}
@@ -418,7 +533,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
         </div>
 
         {/* 3 MAJOR VERTICAL PILLARS */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem, 3.5vw, 3.5rem)' }}>
           
           {/* =========================================================================
              VERTICAL PILLAR 1: SOLAR PANEL INFRASTRUCTURE & SALES
@@ -426,7 +541,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
           <div style={{
             background: '#ffffff',
             borderRadius: '28px',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 3vw, 2.5rem)',
             boxShadow: '0 20px 50px rgba(11, 19, 31, 0.15)',
             border: '1px solid rgba(11, 19, 31, 0.08)',
             overflow: 'hidden'
@@ -437,13 +552,25 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   VERTICAL PILLAR 01
                 </span>
-                <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: '2.1rem', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem' }}>
-                  Solar Panel Infrastructure & Sales
+                <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.3rem, 3.5vw, 2.1rem)', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem' }}>
+                  Solar Panel Infrastructure &amp; Sales
                 </h3>
               </div>
 
-              {/* 3 Horizontal Sub-Section Tabs */}
-              <div style={{ display: 'flex', gap: '0.5rem', background: '#f1f5f9', padding: '0.4rem', borderRadius: '12px', border: '1px solid rgba(11, 19, 31, 0.08)' }}>
+              {/* 3 Horizontal Sub-Section Tabs — scrollable on mobile */}
+              <div style={{ 
+                display: 'flex', 
+                gap: '0.4rem', 
+                background: '#f1f5f9', 
+                padding: '0.4rem', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(11, 19, 31, 0.08)',
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch' as any,
+                flexShrink: 0,
+                maxWidth: '100%',
+                scrollbarWidth: 'none' as any
+              }}>
                 {(['residential', 'commercial', 'industrial'] as const).map((tab) => {
                   const isActive = activeSolarTab === tab;
                   return (
@@ -451,16 +578,17 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                       key={tab}
                       onClick={() => setActiveSolarTab(tab)}
                       style={{
-                        padding: '0.6rem 1.4rem',
+                        padding: isMobile ? '0.45rem 0.65rem' : '0.6rem 1.4rem',
                         borderRadius: '8px',
                         border: 'none',
                         background: isActive ? '#0b131f' : 'transparent',
                         color: isActive ? '#ffffff' : '#475569',
                         fontWeight: isActive ? 700 : 600,
-                        fontSize: '0.85rem',
+                        fontSize: isMobile ? '0.78rem' : '0.85rem',
                         cursor: 'pointer',
                         textTransform: 'capitalize',
                         transition: 'all 0.25s ease',
+                        whiteSpace: 'nowrap',
                         boxShadow: isActive ? '0 4px 14px rgba(11, 19, 31, 0.25)' : 'none'
                       }}
                     >
@@ -482,7 +610,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
           <div style={{
             background: '#ffffff',
             borderRadius: '28px',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 3vw, 2.5rem)',
             boxShadow: '0 20px 50px rgba(11, 19, 31, 0.15)',
             border: '1px solid rgba(11, 19, 31, 0.08)',
             overflow: 'hidden'
@@ -490,8 +618,8 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               VERTICAL PILLAR 02
             </span>
-            <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: '2.1rem', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem', marginBottom: '2rem' }}>
-              Turnkey EPC Solutions (Engineering, Procurement & Construction)
+            <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.1rem, 3vw, 2.1rem)', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem', marginBottom: '2rem' }}>
+              Turnkey EPC Solutions (Engineering, Procurement &amp; Construction)
             </h3>
 
             {/* DYNAMIC CARD ENGINE FOR PILLAR 2 */}
@@ -504,7 +632,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
           <div style={{
             background: '#ffffff',
             borderRadius: '28px',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 3vw, 2.5rem)',
             boxShadow: '0 20px 50px rgba(11, 19, 31, 0.15)',
             border: '1px solid rgba(11, 19, 31, 0.08)',
             overflow: 'hidden'
@@ -512,8 +640,8 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               VERTICAL PILLAR 03
             </span>
-            <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: '2.1rem', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem', marginBottom: '2rem' }}>
-              Tejomay Shield™ AMC & Operation Services
+            <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.1rem, 3vw, 2.1rem)', fontWeight: 700, color: '#0b131f', marginTop: '0.2rem', marginBottom: '2rem' }}>
+              Tejomay Shield™ AMC &amp; Operation Services
             </h3>
 
             {/* DYNAMIC CARD ENGINE FOR PILLAR 3 */}

@@ -29,10 +29,15 @@ export default function TestimonialsSection() {
 
   // Custom photo fallback helper
   const getPhotoForCard = (idx: number, item: TestimonialItem) => {
-    if (item.photo) return item.photo;
-    if (idx === 0) return '/solar1_custom.jpeg';
-    if (idx === 1) return '/solar3.avif';
-    return '/solar4.avif';
+    if (item.photo && !item.photo.includes('solar1_custom.jpeg') && !item.photo.includes('.avif')) {
+      return item.photo;
+    }
+    if (idx === 0) return '/solar_res_1.jpg';
+    if (idx === 1) return '/solar_res_2.jpg';
+    if (idx === 2) return '/solar_res_3.jpg';
+    if (idx === 3) return '/solar_ind_1.jpg';
+    if (idx === 4) return '/solar_ind_2.jpg';
+    return '/solar_ind_3.jpg';
   };
 
   return (
@@ -118,6 +123,7 @@ export default function TestimonialsSection() {
                 key={item.id} 
                 className={`flip-card-container ${isFlipped ? 'is-flipped' : ''}`}
                 onClick={() => toggleFlip(item.id)}
+                style={{ touchAction: 'manipulation' }}
               >
                 <div className="flip-card-inner">
                   
@@ -171,7 +177,7 @@ export default function TestimonialsSection() {
                   </div>
 
                   {/* BACK PAGE OF CARD: White Card */}
-                  <div className="flip-card-back" style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '400px', overflow: 'hidden' }}>
+                  <div className="flip-card-back" style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
                     
                     <div style={{ width: '100%', minWidth: 0 }}>
                       {/* Top Capacity Badge & Date */}

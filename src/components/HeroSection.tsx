@@ -171,36 +171,12 @@ export default function HeroSection({
       {/* =========================================================================
          HERO-BOUNDED CALCULATOR TOGGLE BUTTON (Absolute to Hero - Does NOT follow scrolling)
          ========================================================================= */}
+      {/* Calculator Toggle Side Tab */}
       <button
         onClick={() => setIsCalculatorOpen(!isCalculatorOpen)}
-        style={{
-          position: 'absolute',
-          right: 0,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 45,
-          background: '#6BAE23',
-          color: '#0b131f',
-          border: 'none',
-          borderTopLeftRadius: '16px',
-          borderBottomLeftRadius: '16px',
-          padding: '1.1rem 0.65rem',
-          fontWeight: 800,
-          fontSize: '0.82rem',
-          cursor: 'pointer',
-          boxShadow: '-8px 0 30px rgba(68, 217, 68, 0.5)',
-          writingMode: 'vertical-rl',
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.65rem',
-          transition: 'all 0.3s ease'
-        }}
+        className="calc-side-tab"
       >
         <span>⚡ SOLAR CALCULATOR</span>
-        
-        {/* Rotating Arrow Icon */}
         <span 
           style={{ 
             display: 'inline-block', 
@@ -233,23 +209,11 @@ export default function HeroSection({
          ========================================================================= */}
       <div 
         id="calculator" 
+        className="calc-drawer"
         style={{
-          position: 'absolute',
-          top: '4.5rem',
-          right: '3.5rem',
-          zIndex: 42,
-          width: 'clamp(330px, 410px, 88vw)',
-          maxHeight: 'calc(100% - 6rem)',
-          overflowY: 'auto',
-          background: '#ffffff',
-          borderRadius: '24px',
-          padding: '2rem',
-          boxShadow: '0 25px 70px rgba(0, 0, 0, 0.55)',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
-          color: '#0f172a',
           transform: isCalculatorOpen ? 'translateX(0)' : 'translateX(140%)',
           opacity: isCalculatorOpen ? 1 : 0,
-          transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease'
+          pointerEvents: isCalculatorOpen ? 'auto' : 'none',
         }}
       >
         

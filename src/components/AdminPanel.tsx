@@ -32,7 +32,7 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
     description: '',
     capacityRange: '5 kW - 15 kW Systems',
     estimatedSavings: 'Save up to ₹85,000 / year',
-    image: '/solar2.avif',
+    image: '/solar_res_1.jpg',
     featuresText: 'Monocrystalline Panels, 25-Year Performance Warranty, App Telemetry, Zero-Down Financing'
   });
 
@@ -47,7 +47,7 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
     clientName: '',
     clientRole: 'Homeowner',
     companyOrLocation: 'New Delhi',
-    photo: '/solar1_custom.jpeg',
+    photo: '/solar_res_1.jpg',
     projectCapacity: '8 kW Residential Array',
     quote: '',
     rating: 5,

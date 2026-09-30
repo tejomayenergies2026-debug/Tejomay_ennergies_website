@@ -7,7 +7,7 @@ export default function MissionSection() {
   return (
     <section className="section-dark">
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '3rem', marginBottom: '3.5rem' }}>
+        <div className="mission-header-grid" style={{ marginBottom: '3.5rem' }}>
           <div className="section-label">Our mission</div>
           <h2 className="headline-dark">
             Built to make clean energy simple, smart, and accessible
@@ -62,7 +62,7 @@ export default function MissionSection() {
         {/* Mission Bottom Text & CTA */}
         <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-            At Sonora AI, we believe solar energy should be easy to understand and simple to adopt. Our mission is to help families and businesses move toward cleaner energy with honest guidance, smart technology, and dependable installation.
+            At Tejomay, we believe solar energy should be easy to understand and simple to adopt. Our mission is to help families and businesses move toward cleaner energy with honest guidance, smart technology, and dependable installation.
           </p>
           <button className="btn-lime" onClick={() => scrollTo('planner')}>
             Book Free Consultation

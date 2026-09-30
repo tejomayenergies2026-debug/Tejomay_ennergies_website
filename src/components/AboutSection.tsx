@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AboutSection() {
   return (
-    <section id="about" style={{ background: '#44D944', padding: '5.5rem 1.5rem' }}>
+    <section id="about" style={{ background: '#8CC63F', padding: '5.5rem 1.5rem' }}>
       <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
         
         {/* Single Short Vision Statement Quote (Clean & Minimal - Badge Removed) */}
