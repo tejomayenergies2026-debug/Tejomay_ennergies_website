@@ -86,16 +86,24 @@ export default function HeroSection({
       alignItems: 'flex-end',
       overflow: 'hidden'
     }}>
-      {/* Background Video */}
+      {/* Background Video with Instant Poster Fallback & Forced Autoplay */}
       <video
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
+        poster="/solar_res_3.jpg"
+        ref={(videoRef) => {
+          if (videoRef) {
+            videoRef.defaultMuted = true;
+            videoRef.muted = true;
+            videoRef.play().catch(() => {});
+          }
+        }}
         className="hero-video-bg"
       >
         <source src="/solar-bg.mp4" type="video/mp4" />
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
 
       {/* Video Dark Overlay */}
