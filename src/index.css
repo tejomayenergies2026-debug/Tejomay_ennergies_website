@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-outfit: 'Outfit', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+
+  --color-dark-navy: #0b131f;
+  --color-dark-card: #121c2b;
+  --color-sand-bg: #f5f0eb;
+  --color-lime: #44D944;
+  --color-lime-hover: #37b837;
+  --color-sky-blue: #b2e3f7;
+
+  --color-text-dark: #0f172a;
+  --color-text-light: #ffffff;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Universal Card Text Overflow & Ellipsis Protection */
+.truncate-1 {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100%;
+}
+
+.clamp-2 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  text-overflow: ellipsis !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.clamp-3 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  text-overflow: ellipsis !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.clamp-4 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  text-overflow: ellipsis !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.card-text-safe {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  background-color: var(--color-dark-navy);
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: var(--color-dark-navy);
+  color: var(--color-text-light);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark-navy);
+}
+::-webkit-scrollbar-thumb {
+  background: #44D944;
+  border-radius: 9999px;
+}
+
+/* Buttons */
+.btn-lime {
+  background: #44D944;
+  color: #0b131f;
+  font-family: var(--font-inter);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(68, 217, 68, 0.3);
+}
+
+.btn-lime:hover {
+  background: #37b837;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(68, 217, 68, 0.45);
+}
+
+.btn-solid-white {
+  background: #ffffff;
+  color: #0b131f;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.btn-solid-white:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.35);
+}
+
+/* Hero Background Video - Increased Brightness & Transparency */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.85) contrast(1.05);
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 19, 31, 0.35) 0%,
+    rgba(11, 19, 31, 0.65) 75%,
+    rgba(11, 19, 31, 0.92) 100%
+  );
+  z-index: 1;
+}
+
+/* Translucent Hero Card */
+.hero-translucent-card {
+  background: rgba(10, 18, 28, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  padding: 2.25rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.hero-translucent-card:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Sections */
+.section-dark {
+  background-color: var(--color-dark-navy);
+  color: var(--color-text-light);
+  padding: 5.5rem 1.5rem;
+  position: relative;
+}
+
+.section-sand {
+  background-color: var(--color-sand-bg);
+  color: var(--color-text-dark);
+  padding: 5.5rem 1.5rem;
+}
+
+.section-sky {
+  background-color: var(--color-sky-blue);
+  color: var(--color-text-dark);
+  padding: 5.5rem 1.5rem;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* 3D Lego Word Pop-up Keyframe Animation */
+@keyframes legoPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.65) rotateX(-40deg);
+    filter: blur(6px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.05) rotateX(6deg);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0px);
+  }
+}
+
+.lego-word {
+  display: inline-block;
+  opacity: 0;
+  animation: legoPopIn 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* High-Contrast Evident Silver Shine Sweep over TEJOMAY */
+.word-tejomay-silver-shine {
+  color: #44D944;
+  font-weight: 800;
+  font-size: 1.18em;
+  display: inline-block;
+  vertical-align: bottom;
+  background: linear-gradient(
+    110deg,
+    #44D944 0%,
+    #44D944 38%,
+    #ffffff 48%,
+    #e2e8f0 50%,
+    #ffffff 52%,
+    #44D944 62%,
+    #44D944 100%
+  );
+  background-size: 250% 100%;
+  background-position: -150% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: travelSilverFlash 1.4s cubic-bezier(0.4, 0, 0.2, 1) 2.0s 1 normal forwards;
+  filter: drop-shadow(0 0 12px rgba(68, 217, 68, 0.45));
+}
+
+@keyframes travelSilverFlash {
+  0% {
+    background-position: -150% 0;
+  }
+  50% {
+    background-position: 0% 0;
+    filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 32px rgba(68, 217, 68, 0.8));
+  }
+  100% {
+    background-position: 150% 0;
+    filter: drop-shadow(0 0 12px rgba(68, 217, 68, 0.45));
+  }
+}
+
+/* Outer Border Tracing Line Animation (Top-Right -> Bottom-Right -> Bottom-Left) */
+.founder-card-wrapper {
+  position: relative;
+}
+
+.founder-trace-path {
+  fill: none;
+  stroke: #44D944;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 0.75s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(68, 217, 68, 0.8));
+}
+
+.founder-card-wrapper:hover .founder-trace-path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+/* PERFECT 3-IN-A-ROW HORIZONTAL CARDS (400px height, 360px max width) */
+.flip-card-container {
+  perspective: 1200px;
+  cursor: pointer;
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+  width: 100%;
+  max-width: 370px;
+  margin: 0 auto;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+  text-align: left;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card-container.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.flip-card-front {
+  background: #0b131f;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+.flip-card-back {
+  background: #ffffff;
+  transform: rotateY(180deg);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+/* Hover Transparent Badge on Front Image */
+.front-hover-badge {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.flip-card-container:hover .front-hover-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3D Perspective Card Swap Container */
+.perspective-container {
+  perspective: 1200px;
+}
+
+.card-3d-rotate {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d-rotate:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+}
+
+/* Custom Grids */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.75rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

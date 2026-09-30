@@ -1,0 +1,127 @@
+import React from 'react';
+import TejomayLogo from './TejomayLogo';
+
+export default function Footer() {
+  const handleWhatsApp = () => {
+    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank");
+  };
+
+  return (
+    <footer style={{
+      background: '#060a11',
+      color: '#ffffff',
+      padding: '4.5rem 1.5rem 2.5rem',
+      borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+    }}>
+      <div className="container">
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '3rem',
+          marginBottom: '3.5rem'
+        }}>
+          
+          {/* Brand Info */}
+          <div>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <TejomayLogo size="md" />
+            </div>
+            <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.85rem', lineHeight: 1.6, maxWidth: '280px' }}>
+              Premier green infrastructure provider designing high-yield rooftop solar systems, EPC grid integration, and proactive AMC maintenance.
+            </p>
+          </div>
+
+          {/* Navigation Links */}
+          <div>
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6BAE23', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Navigation
+            </h4>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <li><a href="#hero" style={footerLinkStyle}>Home & Calculator</a></li>
+              <li><a href="#services" style={footerLinkStyle}>Services & Products</a></li>
+              <li><a href="#work" style={footerLinkStyle}>Work Done & Testimonials</a></li>
+              <li><a href="#cities" style={footerLinkStyle}>Active Cities</a></li>
+              <li><a href="#founders" style={footerLinkStyle}>Founders & Team</a></li>
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div>
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6BAE23', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Contact Us
+            </h4>
+            <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.7 }}>
+              📍 Metro Solar Tower, Sector 62<br />
+              📞 +91 8468903255<br />
+              ✉️ support@tejomay.com
+            </p>
+            <button
+              onClick={handleWhatsApp}
+              className="btn-lime"
+              style={{ marginTop: '1rem', padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+            >
+              WhatsApp Support ↗
+            </button>
+          </div>
+
+          {/* Social Media Links */}
+          <div>
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6BAE23', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Follow Social Medias
+            </h4>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {['LinkedIn', 'X / Twitter', 'Instagram', 'YouTube', 'Facebook'].map((soc, idx) => (
+                <a
+                  key={idx}
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handleWhatsApp(); }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    padding: '0.4rem 0.75rem',
+                    borderRadius: '8px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    textDecoration: 'none'
+                  }}
+                >
+                  {soc}
+                </a>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Copyright */}
+        <div style={{
+          paddingTop: '2rem',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          color: 'rgba(255, 255, 255, 0.45)',
+          fontSize: '0.78rem'
+        }}>
+          <div>© 2026 Tejomay Energies Ltd. All Rights Reserved.</div>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <span>Privacy Policy</span>
+            <span>Terms of Service</span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  );
+}
+
+const footerLinkStyle: React.CSSProperties = {
+  color: 'rgba(255, 255, 255, 0.7)',
+  fontSize: '0.85rem',
+  textDecoration: 'none',
+  transition: 'color 0.2s ease'
+};
