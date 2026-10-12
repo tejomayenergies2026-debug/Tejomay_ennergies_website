@@ -42,9 +42,13 @@ export default function WhySonoraSection() {
           </h2>
         </div>
 
-        {/* Single Centered Founder Card */}
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          {founders.slice(0, 1).map((founder) => (
+        {/* Founders Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+          gap: isMobile ? '1.5rem' : '2.25rem'
+        }}>
+          {founders.map((founder, idx) => (
             <div key={founder.id} className="founder-card-wrapper">
               
               {/* SVG Hover Animated Green Line */}
@@ -83,14 +87,14 @@ export default function WhySonoraSection() {
                 style={{
                   background: '#ffffff',
                   borderRadius: '28px',
-                  padding: isMobile ? '1.5rem' : '2.25rem',
+                  padding: isMobile ? '1.35rem' : '2rem',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
                   boxShadow: '0 25px 60px rgba(0, 0, 0, 0.45)',
                   display: isMobile ? 'flex' : 'grid',
                   flexDirection: isMobile ? 'column' : undefined,
-                  gridTemplateColumns: isMobile ? undefined : '200px 1fr',
-                  gap: isMobile ? '1.25rem' : '1.75rem',
-                  alignItems: 'center',
+                  gridTemplateColumns: isMobile ? undefined : '175px 1fr',
+                  gap: isMobile ? '1.1rem' : '1.5rem',
+                  alignItems: isMobile ? 'stretch' : 'center',
                   color: '#0f172a',
                   position: 'relative',
                   zIndex: 5,
@@ -129,7 +133,7 @@ export default function WhySonoraSection() {
                     </span>
                     <h3 style={{
                       fontFamily: 'var(--font-outfit)',
-                      fontSize: '1.5rem',
+                      fontSize: '1.45rem',
                       fontWeight: 700,
                       color: '#0f172a',
                       margin: 0,
@@ -145,7 +149,7 @@ export default function WhySonoraSection() {
                   position: 'relative',
                   borderRadius: '20px',
                   overflow: 'hidden',
-                  height: isMobile ? '250px' : '240px',
+                  height: isMobile ? '230px' : '210px',
                   width: '100%',
                   background: '#0b131f',
                   boxShadow: '0 12px 30px rgba(0,0,0,0.18)',
@@ -159,7 +163,7 @@ export default function WhySonoraSection() {
                   />
                   <div style={{ position: 'absolute', bottom: '0.65rem', left: '0.65rem' }}>
                     <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#0b131f', background: '#6BAE23', padding: '0.25rem 0.65rem', borderRadius: '6px' }}>
-                      Founder &amp; CEO
+                      Founder #{idx + 1}
                     </span>
                   </div>
                 </div>
@@ -173,24 +177,24 @@ export default function WhySonoraSection() {
                           {founder.role}
                         </span>
 
-                        <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.6rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.6rem', lineHeight: 1.2 }}>
+                        <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.2rem, 3vw, 1.7rem)', fontWeight: 700, color: '#0f172a', marginBottom: '0.6rem', lineHeight: 1.2 }}>
                           {founder.name}
                         </h3>
                       </>
                     )}
 
-                    <p style={{ color: '#475569', fontSize: isMobile ? '0.9rem' : '0.92rem', lineHeight: 1.6, marginBottom: '1.25rem', fontStyle: 'italic' }}>
-                      "{founder.bio}"
+                    <p style={{ color: '#475569', fontSize: isMobile ? '0.88rem' : '0.85rem', lineHeight: 1.6, marginBottom: '1.1rem' }}>
+                      {founder.bio}
                     </p>
                   </div>
 
                   {/* Social Buttons */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-                    <a href={founder.instagram || "https://www.instagram.com/tejomay_energies/"} target="_blank" rel="noreferrer" style={{ ...socialBtnStyle, background: 'linear-gradient(135deg, #e1306c, #c13584)', color: '#ffffff' }}>
-                      <span>Instagram ↗</span>
-                    </a>
                     <a href={founder.linkedin} target="_blank" rel="noreferrer" style={socialBtnStyle}>
                       <span>LinkedIn ↗</span>
+                    </a>
+                    <a href={founder.twitter} target="_blank" rel="noreferrer" style={socialBtnStyle}>
+                      <span>X ↗</span>
                     </a>
                     <a href={`mailto:${founder.email}`} style={{ ...socialBtnStyle, background: '#6BAE23', color: '#0b131f', boxShadow: '0 4px 12px rgba(68, 217, 68, 0.3)' }}>
                       <span>Email ✉</span>

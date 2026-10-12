@@ -34,7 +34,7 @@ export interface FounderItem {
   email: string;
 }
 
-const DEFAULT_SERVICES: ServiceItem[] = [
+export const DEFAULT_SERVICES: ServiceItem[] = [
   {
     id: "serv-1",
     category: "residential",
@@ -92,7 +92,7 @@ const DEFAULT_SERVICES: ServiceItem[] = [
   }
 ];
 
-const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
+export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   // 3 RESIDENTIAL SAMPLE CARDS
   {
     id: "test-res-1",
@@ -170,29 +170,26 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   }
 ];
 
-export interface FounderItem {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  photo: string;
-  linkedin: string;
-  twitter: string;
-  instagram?: string;
-  email: string;
-}
-
 const DEFAULT_FOUNDERS: FounderItem[] = [
   {
     id: "found-1",
     name: "Aarav Malhotra",
-    role: "Founder & Chief Executive Officer",
-    bio: "We believe the next era of growth will be powered by clean energy, intelligent technology, and sustainable thinking—and we are committed to being part of that transformation.",
-    photo: "/founder_ceo.jpg",
+    role: "Co-Founder & Chief Executive Officer",
+    bio: "Clean-Tech Innovator & Energy Strategist dedicated to driving sustainable solar adoption across residential & commercial sectors. Leading Tejomay's mission toward zero-carbon energy independence.",
+    photo: "/founder1.jpeg",
     linkedin: "https://linkedin.com",
     twitter: "https://twitter.com",
-    instagram: "https://www.instagram.com/tejomay_energies/",
     email: "aarav@tejomay.com"
+  },
+  {
+    id: "found-2",
+    name: "Devanshu Sharma",
+    role: "Co-Founder & Chief Technology Officer",
+    bio: "Solar Power Systems Specialist focused on high-efficiency bifacial panel arrays, grid synchronization, and automated IoT telemetry monitoring for maximum solar yield.",
+    photo: "/founder2.jpeg",
+    linkedin: "https://linkedin.com",
+    twitter: "https://twitter.com",
+    email: "devanshu@tejomay.com"
   }
 ];
 
