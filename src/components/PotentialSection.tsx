@@ -6,7 +6,7 @@ export default function PotentialSection() {
   };
 
   const callPhone = (phone: string) => {
-    window.open(`tel:${phone.replace(/\s+/g, '')}`, '_self');
+    window.location.href = `tel:${phone.replace(/\s+/g, '')}`;
   };
 
   return (
@@ -150,7 +150,7 @@ export default function PotentialSection() {
                 </button>
 
                 <button
-                  onClick={() => callPhone('+91 98765 43210')}
+                  onClick={() => callPhone('+91 8468903255')}
                   style={{
                     background: '#0b131f',
                     color: '#ffffff',
@@ -277,7 +277,7 @@ export default function PotentialSection() {
                 </button>
 
                 <button
-                  onClick={() => callPhone('+91 98765 43211')}
+                  onClick={() => callPhone('+91 8468903255')}
                   style={{
                     background: '#0b131f',
                     color: '#ffffff',

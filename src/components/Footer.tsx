@@ -74,8 +74,12 @@ export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProp
             </h4>
             <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.7 }}>
               📍 Metro Solar Tower, Sector 62<br />
-              📞 +91 8468903255<br />
-              ✉️ support@tejomay.com
+              <a href="tel:+918468903255" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
+                📞 +91 8468903255
+              </a><br />
+              <a href="mailto:support@tejomay.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
+                ✉️ support@tejomay.com
+              </a>
             </p>
             <button
               onClick={handleWhatsApp}
@@ -92,11 +96,18 @@ export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProp
               Follow Social Medias
             </h4>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {['LinkedIn', 'X / Twitter', 'Instagram', 'YouTube', 'Facebook'].map((soc, idx) => (
+              {[
+                { name: 'LinkedIn', url: 'https://www.linkedin.com/company/tejomay-energies' },
+                { name: 'X / Twitter', url: 'https://x.com/tejomayenergies' },
+                { name: 'Instagram', url: 'https://www.instagram.com/tejomayenergies' },
+                { name: 'YouTube', url: 'https://www.youtube.com/@tejomayenergies' },
+                { name: 'Facebook', url: 'https://www.facebook.com/tejomayenergies' }
+              ].map((soc, idx) => (
                 <a
                   key={idx}
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); handleWhatsApp(); }}
+                  href={soc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     background: 'rgba(255, 255, 255, 0.08)',
                     color: '#ffffff',
@@ -105,10 +116,22 @@ export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProp
                     borderRadius: '8px',
                     fontSize: '0.75rem',
                     fontWeight: 600,
-                    textDecoration: 'none'
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    transition: 'border-color 0.2s, background 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#6BAE23';
+                    e.currentTarget.style.background = 'rgba(107, 174, 35, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
                   }}
                 >
-                  {soc}
+                  {soc.name} ↗
                 </a>
               ))}
             </div>
