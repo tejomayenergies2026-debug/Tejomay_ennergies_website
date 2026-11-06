@@ -174,22 +174,12 @@ const DEFAULT_FOUNDERS: FounderItem[] = [
   {
     id: "found-1",
     name: "Aarav Malhotra",
-    role: "Co-Founder & Chief Executive Officer",
-    bio: "Clean-Tech Innovator & Energy Strategist dedicated to driving sustainable solar adoption across residential & commercial sectors. Leading Tejomay's mission toward zero-carbon energy independence.",
+    role: "Founder & Chief Executive Officer",
+    bio: "“We believe the next era of growth will be powered by clean energy, intelligent technology, and sustainable thinking—and we are committed to being part of that transformation.”",
     photo: "/founder1.jpeg",
     linkedin: "https://linkedin.com",
     twitter: "https://twitter.com",
     email: "aarav@tejomay.com"
-  },
-  {
-    id: "found-2",
-    name: "Devanshu Sharma",
-    role: "Co-Founder & Chief Technology Officer",
-    bio: "Solar Power Systems Specialist focused on high-efficiency bifacial panel arrays, grid synchronization, and automated IoT telemetry monitoring for maximum solar yield.",
-    photo: "/founder2.jpeg",
-    linkedin: "https://linkedin.com",
-    twitter: "https://twitter.com",
-    email: "devanshu@tejomay.com"
   }
 ];
 

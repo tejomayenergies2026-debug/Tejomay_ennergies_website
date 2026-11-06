@@ -161,3 +161,22 @@ export async function uploadImage(file: File, folder: 'services' | 'testimonials
     return null;
   }
 }
+
+export async function deleteImage(publicUrl: string): Promise<boolean> {
+  try {
+    if (!publicUrl || !publicUrl.includes('tejomay-media/')) return false;
+    const parts = publicUrl.split('tejomay-media/');
+    if (parts.length < 2) return false;
+    const filePath = decodeURIComponent(parts[1]);
+
+    const { error } = await supabase.storage
+      .from('tejomay-media')
+      .remove([filePath]);
+
+    if (error) throw error;
+    return true;
+  } catch (err) {
+    console.warn('[Supabase] deleteImage failed:', err);
+    return false;
+  }
+}

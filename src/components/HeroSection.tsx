@@ -111,6 +111,44 @@ export default function HeroSection({
       {/* Video Dark Overlay */}
       <div className="hero-video-overlay" />
 
+      {/* Top Left Official Tejomay Circular Logo */}
+      <div 
+        className="hero-top-left-logo"
+        style={{
+          position: 'absolute',
+          top: '1.5rem',
+          left: '2.5rem',
+          zIndex: 40,
+          cursor: 'pointer',
+          userSelect: 'none'
+        }}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      >
+        <img
+          src="/tejomay-circle-logo.png"
+          alt="Tejomay Energies Official Logo"
+          style={{
+            width: 'clamp(72px, 8.5vw, 102px)',
+            height: 'clamp(72px, 8.5vw, 102px)',
+            borderRadius: '50%',
+            objectFit: 'contain',
+            background: '#ffffff',
+            boxShadow: '0 12px 35px rgba(0, 0, 0, 0.55)',
+            border: '2.5px solid #6BAE23',
+            display: 'block',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.06)';
+            e.currentTarget.style.boxShadow = '0 16px 40px rgba(107, 174, 35, 0.45)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.55)';
+          }}
+        />
+      </div>
+
       {/* Hero Content Container: Positioned Bottom Left */}
       <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
         <div style={{

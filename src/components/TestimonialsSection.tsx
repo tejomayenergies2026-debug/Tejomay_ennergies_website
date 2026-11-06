@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getStoredTestimonials, TestimonialItem } from '../services/store';
+import { fetchTestimonials } from '../services/supabaseStore';
 
 export default function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
@@ -9,6 +10,14 @@ export default function TestimonialsSection() {
   useEffect(() => {
     const handleStorageChange = () => setTestimonials(getStoredTestimonials());
     handleStorageChange();
+
+    // Hydrate from Supabase Cloud
+    fetchTestimonials().then(remoteTestimonials => {
+      if (remoteTestimonials && remoteTestimonials.length > 0) {
+        setTestimonials(remoteTestimonials);
+      }
+    });
+
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('tejomay_data_update', handleStorageChange);
     return () => {
@@ -55,7 +64,7 @@ export default function TestimonialsSection() {
             letterSpacing: '-0.01em',
             margin: 0
           }}>
-            "Perfection is our standard — transforming rooftops with clean, intelligent energy across India."
+            “Turning Renewable Energy into Real-World Impact.”
           </h2>
         </div>
 
@@ -132,6 +141,8 @@ export default function TestimonialsSection() {
                     <img 
                       src={cardPhoto} 
                       alt={item.projectCapacity}
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(11, 19, 31, 0.88) 0%, rgba(11, 19, 31, 0.3) 50%, transparent 100%)' }} />

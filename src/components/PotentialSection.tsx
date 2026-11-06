@@ -24,7 +24,7 @@ export default function PotentialSection() {
             letterSpacing: '-0.01em',
             margin: 0
           }}>
-            "Expanding green horizons — empowering cities and communities with sustainable, zero-emission solar power."
+            “The Future of Energy Begins with the Sun.”
           </h2>
         </div>
 
@@ -61,6 +61,8 @@ export default function PotentialSection() {
               <img 
                 src="/solar2.avif" 
                 alt="New Delhi NCR Solar Center" 
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span style={{
@@ -186,6 +188,8 @@ export default function PotentialSection() {
               <img 
                 src="/solar3.avif" 
                 alt="Mumbai Solar Experience Center" 
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span style={{

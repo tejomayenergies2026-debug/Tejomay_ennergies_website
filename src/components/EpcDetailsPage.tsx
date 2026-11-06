@@ -76,7 +76,7 @@ export default function EpcDetailsPage({ onBack }: EpcDetailsPageProps) {
 
         {/* Hero Photo Banner Card */}
         <div style={{ position: 'relative', borderRadius: '28px', overflow: 'hidden', height: '420px', marginBottom: '4rem', boxShadow: '0 25px 60px rgba(11, 19, 31, 0.2)' }}>
-          <img src="/solar2.avif" alt="Turnkey EPC Solar Project" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="/solar2.avif" alt="Turnkey EPC Solar Project" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(11, 19, 31, 0.85) 0%, transparent 60%)' }} />
           <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', right: '2rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', background: '#44D944', padding: '0.35rem 0.85rem', borderRadius: '6px' }}>

@@ -1,7 +1,28 @@
 import React from 'react';
 import TejomayLogo from './TejomayLogo';
 
-export default function Footer() {
+interface FooterProps {
+  onSecretAdminTrigger?: () => void;
+  onOpenLegal?: (type: 'privacy' | 'terms') => void;
+}
+
+export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProps) {
+  const clickCountRef = React.useRef(0);
+  const clickTimerRef = React.useRef<number | null>(null);
+
+  const handleSecretCopyrightClick = () => {
+    clickCountRef.current += 1;
+    if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+    clickTimerRef.current = window.setTimeout(() => {
+      clickCountRef.current = 0;
+    }, 1500);
+
+    if (clickCountRef.current >= 3) {
+      clickCountRef.current = 0;
+      onSecretAdminTrigger?.();
+    }
+  };
+
   const handleWhatsApp = () => {
     window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank");
   };
@@ -25,7 +46,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div>
             <div style={{ marginBottom: '1.25rem' }}>
-              <TejomayLogo size="md" />
+              <TejomayLogo size="lg" />
             </div>
             <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.85rem', lineHeight: 1.6, maxWidth: '280px' }}>
               Premier green infrastructure provider designing high-yield rooftop solar systems, EPC grid integration, and proactive AMC maintenance.
@@ -107,10 +128,30 @@ export default function Footer() {
           color: 'rgba(255, 255, 255, 0.45)',
           fontSize: '0.78rem'
         }}>
-          <div>© 2026 Tejomay Energies Ltd. All Rights Reserved.</div>
+          <div 
+            onClick={handleSecretCopyrightClick} 
+            title="© 2026 Tejomay Energies Ltd."
+            style={{ cursor: 'default', userSelect: 'none' }}
+          >
+            © 2026 Tejomay Energies Ltd. All Rights Reserved.
+          </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
+            <span 
+              onClick={() => onOpenLegal?.('privacy')}
+              style={{ cursor: 'pointer', transition: 'color 0.2s ease', color: 'rgba(255, 255, 255, 0.65)' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#6BAE23')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+            >
+              Privacy Policy
+            </span>
+            <span 
+              onClick={() => onOpenLegal?.('terms')}
+              style={{ cursor: 'pointer', transition: 'color 0.2s ease', color: 'rgba(255, 255, 255, 0.65)' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#6BAE23')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)')}
+            >
+              Terms of Service
+            </span>
           </div>
         </div>
 

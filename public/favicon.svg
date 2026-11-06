@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="sunGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+    <linearGradient id="solarBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="leafGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#84cc16" />
+      <stop offset="100%" stop-color="#65a30d" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Shield Base -->
+  <rect width="64" height="64" rx="14" fill="#0b131f" />
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+
+  <!-- Solar Grid Cells -->
+  <polygon points="12,18 26,18 22,30 8,30" fill="url(#solarBlue)" />
+  <polygon points="28,18 42,18 38,30 24,30" fill="url(#solarBlue)" />
+  <polygon points="14,32 28,32 24,44 10,44" fill="url(#solarBlue)" />
+  <polygon points="30,32 44,32 40,44 26,44" fill="url(#leafGreen)" />
+
+  <!-- Sun Circle -->
+  <circle cx="46" cy="24" r="9" fill="url(#sunGlow)" />
+  
+  <!-- Sun Rays -->
+  <path d="M46,11 L46,8 M46,37 L46,40 M33,24 L30,24 M59,24 L62,24 M37,15 L35,13 M55,33 L57,35 M37,33 L35,35 M55,15 L57,13" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Eco Energy Lightning Swoosh -->
+  <path d="M43,21 L49,15 L47,24 L54,23 L45,33 L47,27 Z" fill="#ffffff" />
+</svg>

@@ -15,7 +15,7 @@ export default function AboutSection() {
           letterSpacing: '-0.01em',
           margin: 0
         }}>
-          "Empowering a zero-carbon future by transforming everyday sunlight into clean, reliable, and intelligent energy for every roof."
+          “Delivering intelligent solar energy solutions for a cleaner, more efficient and sustainable tomorrow.”
         </h2>
 
       </div>

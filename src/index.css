@@ -526,6 +526,7 @@ body {
   /* ── Navbar: hide desktop pill, show mobile FAB ── */
   .navbar-desktop-pill  { display: none !important; }
   .navbar-mobile-fab    { display: flex !important; }
+  .hero-top-left-logo   { top: 0.85rem !important; left: 1rem !important; right: auto !important; }
 
   /* ── Hero ── */
   #hero {

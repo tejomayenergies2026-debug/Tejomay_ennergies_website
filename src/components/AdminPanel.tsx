@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 import {
   getStoredServices,
   saveStoredServices,
@@ -7,6 +8,17 @@ import {
   ServiceItem,
   TestimonialItem
 } from '../services/store';
+import {
+  fetchServices,
+  upsertService,
+  deleteService,
+  fetchTestimonials,
+  upsertTestimonial,
+  deleteTestimonial,
+  uploadImage,
+  deleteImage
+} from '../services/supabaseStore';
+import TwoFactorManagerModal from './TwoFactorManagerModal';
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -15,8 +27,14 @@ interface AdminPanelProps {
 
 export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
   const [activeSection, setActiveSection] = useState<'services' | 'workDone'>('services');
+  const [adminUserEmail, setAdminUserEmail] = useState<string>('Authorized Admin');
+  const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
+  const [is2FaModalOpen, setIs2FaModalOpen] = useState<boolean>(false);
 
-
+  // Deferred Upload State: Files are staged locally and ONLY uploaded to cloud bucket when card is published
+  const [pendingServiceFile, setPendingServiceFile] = useState<File | null>(null);
+  const [pendingTestimonialFile, setPendingTestimonialFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
 
   // =========================================================================
   // SECTION 1: SERVICES & SUB-SERVICES STATE
@@ -55,52 +73,130 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
     category: 'residential'
   });
 
+  // Security Verification & Data Hydration
   useEffect(() => {
+    // 1. Rigorous Server Session & MFA Level Check (Defense against client-side state manipulation)
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data?.session) {
+        console.warn('[Security] Unauthorized AdminPanel attempt. Forcing logout.');
+        onLogout();
+        onClose();
+        return;
+      }
+
+      try {
+        const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal && aal.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
+          console.warn('[Security] Account requires 2FA (AAL2). Session is unverified. Forcing re-auth.');
+          onLogout();
+          onClose();
+          return;
+        }
+      } catch (e) {
+        console.warn('[Security] MFA assurance check exception:', e);
+      }
+
+      setAdminUserEmail(data.session.user.email || 'Authorized Administrator');
+    });
+
+    // 2. Initial fast cache load
     setServices(getStoredServices());
     setTestimonials(getStoredTestimonials());
+
+    // 3. Hydrate live records from Supabase Cloud
+    setIsCloudSyncing(true);
+    Promise.all([
+      fetchServices().then(items => {
+        if (items && items.length > 0) {
+          setServices(items);
+          saveStoredServices(items);
+        }
+      }),
+      fetchTestimonials().then(items => {
+        if (items && items.length > 0) {
+          setTestimonials(items);
+          saveStoredTestimonials(items);
+        }
+      })
+    ]).finally(() => {
+      setIsCloudSyncing(false);
+    });
   }, []);
 
-  // Handle Local Image Upload for Services
+  // Handle Local Image Selection for Services (Zero Cloud Traffic until Saved)
   const handleServiceImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setServiceForm(prev => ({ ...prev, image: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    // Stage the file locally
+    setPendingServiceFile(file);
+
+    // Provide instant local image preview without uploading to Supabase
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setServiceForm(prev => ({ ...prev, image: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
   };
 
-  // Handle Local Image Upload for Testimonials / Work Done
+  // Handle Local Image Selection for Testimonials / Work Done (Zero Cloud Traffic until Saved)
   const handleTestimonialImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setTestimonialForm(prev => ({ ...prev, photo: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    // Stage the file locally
+    setPendingTestimonialFile(file);
+
+    // Provide instant local image preview without uploading to Supabase
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setTestimonialForm(prev => ({ ...prev, photo: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
   };
 
-  // --- SERVICE CRUD HANDLERS ---
-  const handleSaveService = (e: React.FormEvent) => {
+  // --- SERVICE CRUD HANDLERS (Local Cache + Supabase Cloud Sync) ---
+  const handleSaveService = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUploadingImage(true);
+
+    let finalImageUrl = serviceForm.image || '/solar2.avif';
+
+    // DEFERRED UPLOAD: Upload to Supabase bucket ONLY when the user clicks Save & Publish!
+    if (pendingServiceFile) {
+      try {
+        const cloudUrl = await uploadImage(pendingServiceFile, 'services');
+        if (cloudUrl) {
+          // If replacing an existing cloud image, remove old one from bucket to prevent storage bloat
+          if (editingService?.image && editingService.image !== cloudUrl && editingService.image.includes('tejomay-media')) {
+            deleteImage(editingService.image).catch(() => {});
+          }
+          finalImageUrl = cloudUrl;
+        }
+      } catch (err) {
+        console.warn('[Storage] Upload failed, falling back to cached image:', err);
+      } finally {
+        setPendingServiceFile(null);
+      }
+    }
     
     const parsedFeatures = serviceForm.featuresText
       ? serviceForm.featuresText.split(',').map(f => f.trim()).filter(Boolean)
       : ['Tier-1 Solar Tech', 'Grid Sync', 'Telemetry'];
 
     let updated: ServiceItem[];
+    let targetItem: ServiceItem;
+
     if (editingService) {
-      updated = services.map((s) => (s.id === editingService.id ? ({ 
-        ...s, 
+      targetItem = { 
+        ...editingService, 
         ...serviceForm,
+        image: finalImageUrl,
         features: parsedFeatures
-      } as ServiceItem) : s));
+      } as ServiceItem;
+      updated = services.map((s) => (s.id === editingService.id ? targetItem : s));
     } else {
-      const newService: ServiceItem = {
+      targetItem = {
         id: `serv-${Date.now()}`,
         category: (serviceForm.category || (selectedPillarCategory !== 'all' ? selectedPillarCategory : 'residential')) as any,
         title: serviceForm.title || 'New Solar Service Card',
@@ -108,31 +204,50 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
         description: serviceForm.description || 'Comprehensive solar engineering and installation.',
         capacityRange: serviceForm.capacityRange || '10 kW System',
         estimatedSavings: serviceForm.estimatedSavings || 'Save up to ₹90,000 / year',
-        image: serviceForm.image || '/solar2.avif',
+        image: finalImageUrl,
         features: parsedFeatures
       };
-      updated = [...services, newService];
+      updated = [...services, targetItem];
     }
     
+    // Update memory & local cache
     setServices(updated);
     saveStoredServices(updated);
     window.dispatchEvent(new Event('storage'));
     window.dispatchEvent(new CustomEvent('tejomay_data_update'));
     setIsAddingService(false);
     setEditingService(null);
+    setIsUploadingImage(false);
+
+    // Sync to Supabase Cloud
+    upsertService(targetItem).then(success => {
+      if (success) console.log('[Supabase Cloud] Service synced successfully.');
+    });
   };
 
   const handleDeleteService = (id: string) => {
+    const toDelete = services.find(s => s.id === id);
     if (window.confirm('Are you sure you want to delete this service card?')) {
+      // Clean up orphaned image from Supabase bucket
+      if (toDelete?.image && toDelete.image.includes('tejomay-media')) {
+        deleteImage(toDelete.image).catch(() => {});
+      }
+
       const updated = services.filter((s) => s.id !== id);
       setServices(updated);
       saveStoredServices(updated);
       window.dispatchEvent(new Event('storage'));
       window.dispatchEvent(new CustomEvent('tejomay_data_update'));
+
+      // Sync deletion to Supabase Cloud
+      deleteService(id).then(success => {
+        if (success) console.log('[Supabase Cloud] Service deleted from cloud.');
+      });
     }
   };
 
   const startEditService = (service: ServiceItem) => {
+    setPendingServiceFile(null);
     setEditingService(service);
     setServiceForm({
       ...service,
@@ -141,42 +256,89 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
     setIsAddingService(true);
   };
 
-  // --- TESTIMONIAL / WORK DONE CRUD HANDLERS ---
-  const handleSaveTestimonial = (e: React.FormEvent) => {
+  // --- TESTIMONIAL / WORK DONE CRUD HANDLERS (Local Cache + Supabase Cloud Sync) ---
+  const handleSaveTestimonial = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUploadingImage(true);
+
+    let finalPhotoUrl = testimonialForm.photo || '/solar1_custom.jpeg';
+
+    // DEFERRED UPLOAD: Upload to Supabase bucket ONLY when the user clicks Save & Publish!
+    if (pendingTestimonialFile) {
+      try {
+        const cloudUrl = await uploadImage(pendingTestimonialFile, 'testimonials');
+        if (cloudUrl) {
+          // If replacing an existing cloud image, remove old one from bucket to prevent storage bloat
+          if (editingTestimonial?.photo && editingTestimonial.photo !== cloudUrl && editingTestimonial.photo.includes('tejomay-media')) {
+            deleteImage(editingTestimonial.photo).catch(() => {});
+          }
+          finalPhotoUrl = cloudUrl;
+        }
+      } catch (err) {
+        console.warn('[Storage] Upload failed, falling back to cached image:', err);
+      } finally {
+        setPendingTestimonialFile(null);
+      }
+    }
+
     let updated: TestimonialItem[];
+    let targetItem: TestimonialItem;
+
     if (editingTestimonial) {
-      updated = testimonials.map((t) => (t.id === editingTestimonial.id ? ({ ...t, ...testimonialForm } as TestimonialItem) : t));
+      targetItem = { 
+        ...editingTestimonial, 
+        ...testimonialForm,
+        photo: finalPhotoUrl
+      } as TestimonialItem;
+      updated = testimonials.map((t) => (t.id === editingTestimonial.id ? targetItem : t));
     } else {
-      const newTestimonial: TestimonialItem = {
+      targetItem = {
         id: `test-${Date.now()}`,
         clientName: testimonialForm.clientName || 'Valued Partner',
         clientRole: testimonialForm.clientRole || 'Client',
         companyOrLocation: testimonialForm.companyOrLocation || 'India',
-        photo: testimonialForm.photo || '/solar1_custom.jpeg',
+        photo: finalPhotoUrl,
         projectCapacity: testimonialForm.projectCapacity || '50 kW Rooftop',
         quote: testimonialForm.quote || '',
         rating: Number(testimonialForm.rating || 5),
         date: testimonialForm.date || 'August 2026',
         category: (testimonialForm.category || 'residential') as any
       };
-      updated = [...testimonials, newTestimonial];
+      updated = [...testimonials, targetItem];
     }
+
     setTestimonials(updated);
     saveStoredTestimonials(updated);
     window.dispatchEvent(new Event('storage'));
     window.dispatchEvent(new CustomEvent('tejomay_data_update'));
     setIsAddingTestimonial(false);
     setEditingTestimonial(null);
+    setIsUploadingImage(false);
+
+    // Sync to Supabase Cloud
+    upsertTestimonial(targetItem).then(success => {
+      if (success) console.log('[Supabase Cloud] Testimonial synced successfully.');
+    });
   };
 
   const handleDeleteTestimonial = (id: string) => {
+    const toDelete = testimonials.find(t => t.id === id);
     if (window.confirm('Are you sure you want to delete this project review card?')) {
+      // Clean up orphaned image from Supabase bucket
+      if (toDelete?.photo && toDelete.photo.includes('tejomay-media')) {
+        deleteImage(toDelete.photo).catch(() => {});
+      }
+
       const updated = testimonials.filter((t) => t.id !== id);
       setTestimonials(updated);
       saveStoredTestimonials(updated);
       window.dispatchEvent(new Event('storage'));
       window.dispatchEvent(new CustomEvent('tejomay_data_update'));
+
+      // Sync deletion to Supabase Cloud
+      deleteTestimonial(id).then(success => {
+        if (success) console.log('[Supabase Cloud] Testimonial deleted from cloud.');
+      });
     }
   };
 
@@ -247,13 +409,43 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
           width: '100%',
           boxSizing: 'border-box'
         }}>
-          {/* LEFT: ONLY "Tejomay Admin Panel" */}
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: headerTextColor, fontFamily: 'var(--font-outfit)', margin: 0, letterSpacing: '-0.02em', whiteSpace: 'nowrap', marginRight: 'auto' }}>
-            Tejomay Admin Panel
-          </h2>
+          {/* LEFT: "Tejomay Admin Panel" + Security Badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: headerTextColor, fontFamily: 'var(--font-outfit)', margin: 0, letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+              Tejomay Admin Panel
+            </h2>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              background: 'rgba(107, 174, 35, 0.12)',
+              border: '1px solid rgba(107, 174, 35, 0.35)',
+              padding: '0.3rem 0.75rem',
+              borderRadius: '9999px',
+              fontSize: '0.74rem',
+              color: '#86efac',
+              fontWeight: 600
+            }}>
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#44D944', display: 'inline-block' }} />
+              <span>Verified Session: {adminUserEmail}</span>
+            </div>
+            {isCloudSyncing && (
+              <span style={{ fontSize: '0.72rem', color: '#38bdf8' }}>
+                ⏳ Syncing Cloud...
+              </span>
+            )}
+          </div>
 
           {/* FAR RIGHT: ALL TOP ACTION BUTTONS */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0, marginLeft: '2rem' }}>
+            <button 
+              onClick={() => setIs2FaModalOpen(true)} 
+              style={{ background: 'rgba(107, 174, 35, 0.15)', border: '1.5px solid #6BAE23', color: '#6BAE23', padding: '0.6rem 1.15rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(107, 174, 35, 0.2)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+            >
+              <span>🛡️</span>
+              <span>2FA Security Key</span>
+            </button>
+
             <button 
               onClick={handleResetData} 
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: headerTextColor, padding: '0.6rem 1.1rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
@@ -647,7 +839,10 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
               </h4>
               <button 
                 type="button" 
-                onClick={() => setIsAddingService(false)}
+                onClick={() => {
+                  setPendingServiceFile(null);
+                  setIsAddingService(false);
+                }}
                 style={{ background: 'transparent', border: 'none', color: modalTextColor, fontSize: '1.4rem', cursor: 'pointer', padding: '0 0.5rem' }}
               >
                 ✕
@@ -786,11 +981,23 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
             </div>
 
             <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'flex-end', paddingTop: '0.75rem', borderTop: modalInputBorder }}>
-              <button type="button" onClick={() => setIsAddingService(false)} style={{ background: '#cbd5e1', color: '#0b131f', border: 'none', padding: '0.55rem 1.25rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem' }}>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setPendingServiceFile(null);
+                  setIsAddingService(false);
+                }} 
+                style={{ background: '#cbd5e1', color: '#0b131f', border: 'none', padding: '0.55rem 1.25rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem' }}
+              >
                 Cancel
               </button>
-              <button type="submit" className="btn-lime" style={{ padding: '0.55rem 1.5rem', fontSize: '0.82rem' }}>
-                Save & Publish Card ⚡
+              <button 
+                type="submit" 
+                disabled={isUploadingImage}
+                className="btn-lime" 
+                style={{ padding: '0.55rem 1.5rem', fontSize: '0.82rem', opacity: isUploadingImage ? 0.7 : 1, cursor: isUploadingImage ? 'wait' : 'pointer' }}
+              >
+                {isUploadingImage ? 'Uploading & Saving... ⏳' : 'Save & Publish Card ⚡'}
               </button>
             </div>
           </form>
@@ -838,7 +1045,10 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
               </h4>
               <button 
                 type="button" 
-                onClick={() => setIsAddingTestimonial(false)}
+                onClick={() => {
+                  setPendingTestimonialFile(null);
+                  setIsAddingTestimonial(false);
+                }}
                 style={{ background: 'transparent', border: 'none', color: modalTextColor, fontSize: '1.4rem', cursor: 'pointer', padding: '0 0.5rem' }}
               >
                 ✕
@@ -961,16 +1171,34 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
             </div>
 
             <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'flex-end', paddingTop: '0.75rem', borderTop: modalInputBorder }}>
-              <button type="button" onClick={() => setIsAddingTestimonial(false)} style={{ background: '#cbd5e1', color: '#0b131f', border: 'none', padding: '0.55rem 1.25rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem' }}>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setPendingTestimonialFile(null);
+                  setIsAddingTestimonial(false);
+                }} 
+                style={{ background: '#cbd5e1', color: '#0b131f', border: 'none', padding: '0.55rem 1.25rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem' }}
+              >
                 Cancel
               </button>
-              <button type="submit" className="btn-lime" style={{ padding: '0.55rem 1.5rem', fontSize: '0.82rem' }}>
-                Save & Publish Review ⚡
+              <button 
+                type="submit" 
+                disabled={isUploadingImage}
+                className="btn-lime" 
+                style={{ padding: '0.55rem 1.5rem', fontSize: '0.82rem', opacity: isUploadingImage ? 0.7 : 1, cursor: isUploadingImage ? 'wait' : 'pointer' }}
+              >
+                {isUploadingImage ? 'Uploading & Saving... ⏳' : 'Save & Publish Review ⚡'}
               </button>
             </div>
           </form>
         </div>
       )}
+
+      {/* 2FA Security Key Management Modal */}
+      <TwoFactorManagerModal
+        isOpen={is2FaModalOpen}
+        onClose={() => setIs2FaModalOpen(false)}
+      />
 
     </div>
   );

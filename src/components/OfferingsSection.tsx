@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getStoredServices, ServiceItem } from '../services/store';
+import { fetchServices } from '../services/supabaseStore';
 
 interface OfferingsSectionProps {
   onOpenEpcDetailsPage?: () => void;
@@ -31,6 +32,14 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   useEffect(() => {
     const handleStorageChange = () => setServices(getStoredServices());
     handleStorageChange();
+
+    // Hydrate from Supabase Cloud
+    fetchServices().then(remoteServices => {
+      if (remoteServices && remoteServices.length > 0) {
+        setServices(remoteServices);
+      }
+    });
+
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('tejomay_data_update', handleStorageChange);
     return () => {

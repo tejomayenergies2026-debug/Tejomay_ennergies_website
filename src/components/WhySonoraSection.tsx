@@ -38,14 +38,16 @@ export default function WhySonoraSection() {
             letterSpacing: '-0.02em',
             margin: 0
           }}>
-            Founders
+            {founders.length === 1 ? 'Founder & Leadership' : 'Founders'}
           </h2>
         </div>
 
         {/* Founders Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+          gridTemplateColumns: isMobile || founders.length === 1 ? '1fr' : 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+          maxWidth: founders.length === 1 ? '780px' : undefined,
+          margin: founders.length === 1 ? '0 auto' : undefined,
           gap: isMobile ? '1.5rem' : '2.25rem'
         }}>
           {founders.map((founder, idx) => (
@@ -159,11 +161,13 @@ export default function WhySonoraSection() {
                   <img
                     src={founder.photo}
                     alt={founder.name}
+                    loading="lazy"
+                    decoding="async"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
                   />
                   <div style={{ position: 'absolute', bottom: '0.65rem', left: '0.65rem' }}>
                     <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#0b131f', background: '#6BAE23', padding: '0.25rem 0.65rem', borderRadius: '6px' }}>
-                      Founder #{idx + 1}
+                      {founders.length === 1 ? 'Founder' : `Founder #${idx + 1}`}
                     </span>
                   </div>
                 </div>

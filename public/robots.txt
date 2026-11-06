@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block admin-related paths from search engine indexing
+Disallow: /admin
+Disallow: /login
+Disallow: /admin-panel
+
+Sitemap: https://www.tejomayenergies.com/sitemap.xml

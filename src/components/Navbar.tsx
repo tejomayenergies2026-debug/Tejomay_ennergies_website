@@ -84,27 +84,30 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
             ))}
           </nav>
 
-          <div style={{ width: '1px', height: '22px', background: 'rgba(255, 255, 255, 0.15)' }} />
+          {isAdminLoggedIn && (
+            <>
+              <div style={{ width: '1px', height: '22px', background: 'rgba(255, 255, 255, 0.15)' }} />
+              <button
+                onClick={onOpenAdmin}
+                style={{
+                  background: 'rgba(107, 174, 35, 0.15)',
+                  border: '1px solid #6BAE23',
+                  color: '#6BAE23',
+                  padding: '0.5rem 1.1rem',
+                  borderRadius: '9999px',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                ⚡ Admin
+              </button>
+            </>
+          )}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <button
-              onClick={onOpenAdmin}
-              style={{
-                background: isAdminLoggedIn ? 'rgba(107, 174, 35, 0.15)' : 'rgba(255, 255, 255, 0.08)',
-                border: isAdminLoggedIn ? '1px solid #6BAE23' : '1px solid rgba(255, 255, 255, 0.18)',
-                color: isAdminLoggedIn ? '#6BAE23' : '#ffffff',
-                padding: '0.5rem 1.1rem',
-                borderRadius: '9999px',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {isAdminLoggedIn ? '⚡ Admin' : '🔒 Login'}
-            </button>
-
             <button
               onClick={handleWhatsApp}
               className="btn-lime"
@@ -192,22 +195,24 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
         ))}
 
         <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
-          <button
-            onClick={() => { setMenuOpen(false); onOpenAdmin(); }}
-            style={{
-              flex: 1, padding: '0.85rem', borderRadius: '12px',
-              background: isAdminLoggedIn ? 'rgba(107,174,35,0.2)' : 'rgba(255,255,255,0.08)',
-              border: isAdminLoggedIn ? '1px solid #6BAE23' : '1px solid rgba(255,255,255,0.15)',
-              color: isAdminLoggedIn ? '#6BAE23' : '#ffffff',
-              fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer'
-            }}
-          >
-            {isAdminLoggedIn ? '⚡ Admin' : '🔒 Login'}
-          </button>
+          {isAdminLoggedIn && (
+            <button
+              onClick={() => { setMenuOpen(false); onOpenAdmin(); }}
+              style={{
+                flex: 1, padding: '0.85rem', borderRadius: '12px',
+                background: 'rgba(107,174,35,0.2)',
+                border: '1px solid #6BAE23',
+                color: '#6BAE23',
+                fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer'
+              }}
+            >
+              ⚡ Admin
+            </button>
+          )}
           <button
             onClick={() => { setMenuOpen(false); handleWhatsApp(); }}
             className="btn-lime"
-            style={{ flex: 2, padding: '0.85rem', fontSize: '0.95rem', borderRadius: '12px', justifyContent: 'center' }}
+            style={{ flex: 1, padding: '0.85rem', fontSize: '0.95rem', borderRadius: '12px', justifyContent: 'center' }}
           >
             <span>Book a Call ↗</span>
           </button>

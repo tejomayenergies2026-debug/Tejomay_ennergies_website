@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -10,12 +10,109 @@ import WhySonoraSection from './components/WhySonoraSection';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import AdminPanel from './components/AdminPanel';
+import LegalModal from './components/LegalModal';
+
+import { supabase } from './lib/supabase';
 
 export default function App() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [legalModalState, setLegalModalState] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' }>({
+    isOpen: false,
+    type: 'privacy'
+  });
+
+  // 404 URL Normalization: Gracefully clean unknown subpaths back to root on mount
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    if (pathname && pathname !== '/' && !pathname.includes('.')) {
+      if (window.history.replaceState) {
+        window.history.replaceState(null, '', '/' + window.location.hash);
+      }
+    }
+  }, []);
+
+  // Restore session on page load (survives refresh)
+  useEffect(() => {
+    const verifySessionSecurity = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data?.session) {
+        setIsAdminLoggedIn(false);
+        return;
+      }
+      try {
+        const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal && aal.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
+          // Account has 2FA enabled but current session lacks TOTP verification
+          setIsAdminLoggedIn(false);
+          return;
+        }
+      } catch {
+        // ignore
+      }
+      setIsAdminLoggedIn(true);
+    };
+
+    verifySessionSecurity();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!session) {
+        setIsAdminLoggedIn(false);
+        setIsAdminPanelOpen(false);
+        return;
+      }
+      try {
+        const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal && aal.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
+          setIsAdminLoggedIn(false);
+          setIsAdminPanelOpen(false);
+          return;
+        }
+      } catch {
+        // ignore
+      }
+      setIsAdminLoggedIn(true);
+    });
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  // Stealth Access Layer 1: Secret URL triggers (e.g. #/x9k2-admin or ?portal=admin)
+  useEffect(() => {
+    const checkSecretRoute = () => {
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+      if (
+        hash === '#/x9k2-admin' || 
+        hash === '#/admin' || 
+        search.includes('admin=tejomay') || 
+        search.includes('portal=admin')
+      ) {
+        // Clear secret hash from browser bar to maintain stealth
+        if (window.history.replaceState) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+        handleOpenAdminClick();
+      }
+    };
+
+    checkSecretRoute();
+    window.addEventListener('hashchange', checkSecretRoute);
+    return () => window.removeEventListener('hashchange', checkSecretRoute);
+  }, [isAdminLoggedIn]);
+
+  // Stealth Access Layer 2: Keyboard shortcut (Ctrl + Shift + A / Cmd + Shift + A)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        handleOpenAdminClick();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdminLoggedIn]);
   
   // Dedicated EPC Details Page State
   const [isEpcDetailsPageOpen, setIsEpcDetailsPageOpen] = useState(false);
@@ -48,7 +145,8 @@ export default function App() {
     setIsAdminPanelOpen(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAdminLoggedIn(false);
     setIsAdminPanelOpen(false);
   };
@@ -67,7 +165,10 @@ export default function App() {
           onCloseCalculator={handleCloseCalculator}
         />
         <EpcDetailsPage onBack={() => setIsEpcDetailsPageOpen(false)} />
-        <Footer />
+        <Footer 
+          onSecretAdminTrigger={handleOpenAdminClick} 
+          onOpenLegal={(type) => setLegalModalState({ isOpen: true, type })}
+        />
       </div>
     );
   }
@@ -107,13 +208,23 @@ export default function App() {
       </main>
 
       {/* Section 7: Footer */}
-      <Footer />
+      <Footer 
+        onSecretAdminTrigger={handleOpenAdminClick} 
+        onOpenLegal={(type) => setLegalModalState({ isOpen: true, type })}
+      />
 
       {/* Admin Login Dialog */}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+      />
+
+      {/* Legal & Compliance Modal (Privacy Policy / Terms of Service) */}
+      <LegalModal
+        isOpen={legalModalState.isOpen}
+        type={legalModalState.type}
+        onClose={() => setLegalModalState(prev => ({ ...prev, isOpen: false }))}
       />
 
       {/* Single-Page Owner Admin Panel Dashboard */}
