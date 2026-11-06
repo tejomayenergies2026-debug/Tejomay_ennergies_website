@@ -24,6 +24,20 @@ export default function HeroSection({
   const TARIFF_RATE = customerType === 'residential' ? 8.0 : 9.5; // Avg ₹/kWh in India
   const UNITS_PER_KW_MONTH = 120; // 4 units/day * 30 days = 120 kWh per 1 kW/month
 
+  // Two-way synchronized input handlers (Bill and kW are directly connected)
+  const handleBillChange = (newBill: number) => {
+    setMonthlyBill(newBill);
+    const units = newBill / TARIFF_RATE;
+    const derivedKw = Math.max(1, Math.min(25, Math.round((units / UNITS_PER_KW_MONTH) * 2) / 2));
+    setSystemKw(derivedKw);
+  };
+
+  const handleKwChange = (newKw: number) => {
+    setSystemKw(newKw);
+    const derivedBill = Math.round(newKw * UNITS_PER_KW_MONTH * TARIFF_RATE);
+    setMonthlyBill(Math.min(60000, Math.max(1500, derivedBill)));
+  };
+
   // Dynamic Math Calculations based on Mode:
   let effectiveKw: number;
   let effectiveBill: number;
@@ -411,7 +425,7 @@ export default function HeroSection({
                 max={60000}
                 step={500}
                 value={monthlyBill}
-                onChange={(e) => setMonthlyBill(Number(e.target.value))}
+                onChange={(e) => handleBillChange(Number(e.target.value))}
                 style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
@@ -434,7 +448,7 @@ export default function HeroSection({
                 max={25}
                 step={0.5}
                 value={systemKw}
-                onChange={(e) => setSystemKw(Number(e.target.value))}
+                onChange={(e) => handleKwChange(Number(e.target.value))}
                 style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
