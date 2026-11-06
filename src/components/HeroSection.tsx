@@ -483,7 +483,7 @@ export default function HeroSection({
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '0.75rem',
-          marginBottom: '1.25rem'
+          marginBottom: 0
         }}>
           <div>
             <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Est. Annual Savings</span>
@@ -531,26 +531,6 @@ export default function HeroSection({
             <span style={{ fontSize: '0.63rem', color: '#15803d', fontWeight: 600 }}>25-Yr ROI: ₹{(est25YrSavings / 100000).toFixed(1)}L</span>
           </div>
         </div>
-
-        {/* Action Button inside Drawer */}
-        <button
-          onClick={handleWhatsAppConsult}
-          className="btn-lime"
-          style={{
-            width: '100%',
-            padding: '0.85rem 1rem',
-            borderRadius: '10px',
-            fontSize: '0.88rem',
-            fontWeight: 800,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.4rem',
-            cursor: 'pointer'
-          }}
-        >
-          <span>Get Free Technical Site Survey ↗</span>
-        </button>
 
       </div>
 
