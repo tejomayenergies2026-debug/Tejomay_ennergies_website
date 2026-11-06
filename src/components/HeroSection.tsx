@@ -163,12 +163,13 @@ export default function HeroSection({
           <h1 
             style={{
               fontFamily: 'var(--font-outfit)',
-              fontSize: 'clamp(2.4rem, 4.4vw, 3.8rem)',
+              fontSize: 'clamp(1.9rem, 6.5vw, 3.8rem)',
               fontWeight: 600,
               lineHeight: 1.18,
               color: '#ffffff',
-              marginBottom: '2.25rem',
-              letterSpacing: '-0.02em'
+              marginBottom: '2rem',
+              letterSpacing: '-0.02em',
+              wordBreak: 'break-word'
             }}
           >
             {titleWords.map((item, idx) => (
@@ -192,7 +193,7 @@ export default function HeroSection({
           </h1>
 
           {/* Action Buttons Positioned Lower Bottom Left */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+          <div className="hero-action-buttons-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
             <button 
               onClick={handleWhatsAppConsult} 
               className="btn-lime" 

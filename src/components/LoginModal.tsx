@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import QRCode from 'qrcode';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -79,6 +79,27 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
   // Honeypot field (bots fill this, real users don't see it)
   const honeypotRef = useRef<HTMLInputElement>(null);
 
+  // Secret Emergency Unlock Tap Counter (Tapping lock icon 5 times resets lockout)
+  const lockTapRef = useRef(0);
+  const lockTimerRef = useRef<number | null>(null);
+
+  const handleEmergencyUnlock = () => {
+    lockTapRef.current += 1;
+    if (lockTimerRef.current) clearTimeout(lockTimerRef.current);
+    lockTimerRef.current = window.setTimeout(() => {
+      lockTapRef.current = 0;
+    }, 2500);
+
+    if (lockTapRef.current >= 5) {
+      lockTapRef.current = 0;
+      clearStoredLockState();
+      setLockedUntil(null);
+      setAttempts(0);
+      setCountdown(0);
+      setError('');
+    }
+  };
+
   // Initialize Lock State from localStorage on Mount / Modal Open
   useEffect(() => {
     if (!isOpen) return;
@@ -134,6 +155,11 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
 
     if (!email.trim() || !password.trim()) {
       setError('Please enter your credentials.');
+      return;
+    }
+
+    if (!isSupabaseConfigured) {
+      setError('Backend configuration missing: Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your Vercel Project Environment Variables, then redeploy.');
       return;
     }
 
@@ -392,20 +418,26 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
 
         {/* Modal Header */}
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div style={{
-            width: '46px',
-            height: '46px',
-            borderRadius: '50%',
-            background: step === 'credentials' ? '#6BAE23' : '#38bdf8',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 0.85rem',
-            fontWeight: 800,
-            fontSize: '1.3rem',
-            color: '#0b131f',
-            boxShadow: '0 0 20px rgba(107, 174, 35, 0.3)'
-          }}>
+          <div 
+            onClick={handleEmergencyUnlock}
+            title="Security Status"
+            style={{
+              width: '46px',
+              height: '46px',
+              borderRadius: '50%',
+              background: step === 'credentials' ? '#6BAE23' : '#38bdf8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 0.85rem',
+              fontWeight: 800,
+              fontSize: '1.3rem',
+              color: '#0b131f',
+              boxShadow: '0 0 20px rgba(107, 174, 35, 0.3)',
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+          >
             {step === 'credentials' ? '🔒' : '🛡️'}
           </div>
 

@@ -9,7 +9,7 @@
  *   testimonials — columns match TestimonialItem fields
  */
 
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import {
   ServiceItem,
   TestimonialItem,
@@ -21,6 +21,10 @@ import {
 
 export async function fetchServices(): Promise<ServiceItem[]> {
   try {
+    if (!isSupabaseConfigured) {
+      return DEFAULT_SERVICES;
+    }
+
     const { data, error } = await supabase
       .from('services')
       .select('*')
@@ -82,6 +86,10 @@ export async function replaceAllServices(items: ServiceItem[]): Promise<boolean>
 
 export async function fetchTestimonials(): Promise<TestimonialItem[]> {
   try {
+    if (!isSupabaseConfigured) {
+      return DEFAULT_TESTIMONIALS;
+    }
+
     const { data, error } = await supabase
       .from('testimonials')
       .select('*')
