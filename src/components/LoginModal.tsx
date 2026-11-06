@@ -159,7 +159,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
     }
 
     if (!isSupabaseConfigured) {
-      setError('Backend configuration missing: Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your Vercel Project Environment Variables, then redeploy.');
+      setError('Authentication service unavailable. Please contact the system administrator. (Code: SEC-CFG-01)');
       return;
     }
 
@@ -273,7 +273,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
 
       if (enrollError || !enrollData) {
         console.warn('[2FA] Enroll failed or not configured in project:', enrollError);
-        setError('Two-Factor Authentication is required for administrator access. Please verify Supabase MFA settings.');
+        setError('Two-Factor Authentication setup required. (Code: SEC-MFA-02)');
         return;
       }
 
