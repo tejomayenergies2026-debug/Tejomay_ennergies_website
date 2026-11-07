@@ -168,11 +168,19 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password: password.trim(),
       });
 
       if (authError || !authData.user) {
+        console.warn('[Supabase Auth Error]:', authError?.message || authError);
+
+        if (authError?.message?.toLowerCase().includes('confirm')) {
+          setError('Email unconfirmed in Supabase. In Supabase Dashboard > Auth > Users, click "..." on your user and select "Auto Confirm User".');
+          setLoading(false);
+          return;
+        }
+
         const cur = getStoredLockState();
         const newAttempts = (cur.attempts || 0) + 1;
         const newLastAttempt = Date.now();
