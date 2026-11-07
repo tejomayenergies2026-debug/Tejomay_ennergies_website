@@ -94,7 +94,10 @@ export default function PotentialSection() {
                   display: 'inline-block',
                   marginBottom: '0.75rem'
                 }}>
-                  📍 CONNAUGHT PLACE
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <img src="/location-icon.png" alt="Location" style={{ width: '15px', height: '15px', objectFit: 'contain' }} />
+                    CONNAUGHT PLACE
+                  </span>
                 </span>
 
                 <h3 style={{
@@ -146,7 +149,10 @@ export default function PotentialSection() {
                     transition: 'background 0.2s ease'
                   }}
                 >
-                  📍 Google Maps ↗
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.45rem' }}>
+                    <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                    Google Maps ↗
+                  </span>
                 </button>
 
                 <button
@@ -226,7 +232,10 @@ export default function PotentialSection() {
                   display: 'inline-block',
                   marginBottom: '0.75rem'
                 }}>
-                  📍 BANDRA KURLA COMPLEX (BKC)
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <img src="/location-icon.png" alt="Location" style={{ width: '15px', height: '15px', objectFit: 'contain' }} />
+                    BANDRA KURLA COMPLEX (BKC)
+                  </span>
                 </span>
 
                 <h3 style={{
@@ -278,7 +287,10 @@ export default function PotentialSection() {
                     transition: 'background 0.2s ease'
                   }}
                 >
-                  📍 Google Maps ↗
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.45rem' }}>
+                    <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                    Google Maps ↗
+                  </span>
                 </button>
 
                 <button

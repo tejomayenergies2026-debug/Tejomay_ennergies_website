@@ -651,30 +651,33 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
          MODAL POPUP FOR EXPANDED TECHNICAL SPECIFICATIONS
          ========================================================================= */}
       {selectedModalCard && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 110,
-          background: 'rgba(5, 10, 18, 0.85)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1.5rem'
-        }}>
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setSelectedModalCard(null); }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 990,
+            background: 'rgba(5, 10, 18, 0.85)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            padding: '5.5rem 1.25rem 2.5rem 1.25rem',
+            overflowY: 'auto'
+          }}>
           <div style={{
             background: '#ffffff',
             borderRadius: '28px',
             maxWidth: '680px',
             width: '100%',
-            maxHeight: '90vh',
+            maxHeight: 'calc(100vh - 7.5rem)',
             overflowY: 'auto',
             padding: '2.5rem',
             boxShadow: '0 30px 80px rgba(0, 0, 0, 0.6)',
             position: 'relative',
             border: '2px solid #0b131f',
-            margin: 'auto'
+            margin: '0 auto'
           }}>
             <button
               onClick={() => setSelectedModalCard(null)}

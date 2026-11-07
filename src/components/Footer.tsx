@@ -73,7 +73,10 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
               Contact Us
             </h4>
             <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.7 }}>
-              📍 Metro Solar Tower, Sector 62<br />
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                Metro Solar Tower, Sector 62
+              </span><br />
               <a href="tel:+918468903255" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
                 <img src="/call-icon.png" alt="Call" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
                 +91 8468903255

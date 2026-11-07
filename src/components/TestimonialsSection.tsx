@@ -163,7 +163,10 @@ export default function TestimonialsSection() {
                       maxWidth: '220px'
                     }}>
                       <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#44D944', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        📍 {item.companyOrLocation}
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <img src="/location-icon.png" alt="Location" style={{ width: '13px', height: '13px', objectFit: 'contain' }} />
+                          {item.companyOrLocation}
+                        </span>
                       </div>
                       <div style={{ fontSize: '0.82rem', fontWeight: 700, marginTop: '0.2rem', color: '#ffffff' }}>
                         {item.projectCapacity}
