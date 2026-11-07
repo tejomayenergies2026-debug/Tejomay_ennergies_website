@@ -209,7 +209,8 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
           setStoredLockState(updatedState);
           setAttempts(newAttempts);
           const remaining = MAX_ATTEMPTS - newAttempts;
-          setError(`Invalid credentials. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.`);
+          const rawMsg = authError?.message || 'Invalid credentials';
+          setError(`${rawMsg}. (${remaining} attempt${remaining !== 1 ? 's' : ''} remaining)`);
         }
         setPassword('');
         setLoading(false);
