@@ -171,22 +171,13 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
               >
                 Details 🔍
               </button>
-              {currentCategory === 'epc' && onOpenEpcDetailsPage ? (
-                <button
-                  onClick={(e) => { e.stopPropagation(); onOpenEpcDetailsPage(); }}
-                  style={{ background: '#0b131f', color: '#ffffff', border: 'none', padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
-                >
-                  View Details ↗
-                </button>
-              ) : (
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleWhatsApp(card.title); }}
-                  className="btn-lime"
-                  style={{ padding: '0.35rem 0.65rem', fontSize: '0.7rem', whiteSpace: 'nowrap' }}
-                >
-                  Book ↗
-                </button>
-              )}
+              <button
+                onClick={(e) => { e.stopPropagation(); handleWhatsApp(card.title); }}
+                className="btn-lime"
+                style={{ padding: '0.35rem 0.65rem', fontSize: '0.7rem', whiteSpace: 'nowrap' }}
+              >
+                Book a Call ↗
+              </button>
             </div>
           </div>
         </div>
@@ -330,22 +321,17 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   <button
                     onClick={() => setSelectedModalCard(card)}
-                    style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.75rem 1.4rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.75rem 1.4rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
                   >
-                    <span>View Specifications 🔍</span>
+                    <span>Details 🔍</span>
                   </button>
-                  {currentCategory === 'epc' && onOpenEpcDetailsPage ? (
-                    <button
-                      onClick={onOpenEpcDetailsPage}
-                      style={{ background: '#0b131f', color: '#ffffff', border: 'none', padding: '0.75rem 1.4rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 15px rgba(11,19,31,0.25)' }}
-                    >
-                      <span>View More Details ↗</span>
-                    </button>
-                  ) : (
-                    <button onClick={() => handleWhatsApp(card.title)} className="btn-lime" style={{ padding: '0.75rem 1.4rem' }}>
-                      <span>Book Call ↗</span>
-                    </button>
-                  )}
+                  <button 
+                    onClick={() => handleWhatsApp(card.title)} 
+                    className="btn-lime" 
+                    style={{ padding: '0.75rem 1.4rem', fontSize: '0.85rem' }}
+                  >
+                    <span>Book a Call ↗</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -396,7 +382,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button onClick={() => setSelectedModalCard(card)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.5rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>Details 🔍</button>
-                  <button onClick={() => handleWhatsApp(card.title)} className="btn-lime" style={{ padding: '0.5rem 0.85rem', fontSize: '0.75rem' }}>Book ↗</button>
+                  <button onClick={() => handleWhatsApp(card.title)} className="btn-lime" style={{ padding: '0.5rem 0.85rem', fontSize: '0.75rem' }}>Book a Call ↗</button>
                 </div>
               </div>
             </div>
@@ -477,7 +463,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 </div>
                 <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>
                   <button onClick={() => setSelectedModalCard(card3)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.45rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>Details 🔍</button>
-                  <button onClick={() => handleWhatsApp(card3.title)} className="btn-lime" style={{ padding: '0.45rem 0.85rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>Book ↗</button>
+                  <button onClick={() => handleWhatsApp(card3.title)} className="btn-lime" style={{ padding: '0.45rem 0.85rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>Book a Call ↗</button>
                 </div>
               </div>
             </div>
@@ -767,7 +753,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 className="btn-lime"
                 style={{ padding: '0.75rem 1.5rem' }}
               >
-                <span>Book Site Survey ↗</span>
+                <span>Book a Call ↗</span>
               </button>
             </div>
 
