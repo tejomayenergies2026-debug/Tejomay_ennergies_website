@@ -14,11 +14,10 @@ export default function HeroSection({
   const isCalculatorOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const setIsCalculatorOpen = externalSetIsOpen || setInternalIsOpen;
 
-  // Calculator Inputs (Official Indian Solar Formula - MNRE / PM Surya Ghar Standard)
+  // Calculator Inputs (Official Indian Solar Formula - MNRE Standard)
   const [customerType, setCustomerType] = useState<'residential' | 'commercial'>('residential');
-  const [calcMode, setCalcMode] = useState<'bill' | 'capacity'>('bill');
   const [monthlyBill, setMonthlyBill] = useState<number>(8500);
-  const [systemKw, setSystemKw] = useState<number>(5);
+  const [systemKw, setSystemKw] = useState<number>(9);
 
   // Official MNRE / Industry Solar Formula Constants
   const TARIFF_RATE = customerType === 'residential' ? 8.0 : 9.5; // Avg ₹/kWh in India
@@ -38,53 +37,24 @@ export default function HeroSection({
     setMonthlyBill(Math.min(60000, Math.max(1500, derivedBill)));
   };
 
-  // Dynamic Math Calculations based on Mode:
-  let effectiveKw: number;
-  let effectiveBill: number;
-
-  if (calcMode === 'bill') {
-    const monthlyUnitsConsumed = monthlyBill / TARIFF_RATE;
-    effectiveKw = Math.max(1, Math.round((monthlyUnitsConsumed / UNITS_PER_KW_MONTH) * 10) / 10);
-    effectiveBill = monthlyBill;
-  } else {
-    effectiveKw = systemKw;
-    effectiveBill = Math.round(effectiveKw * UNITS_PER_KW_MONTH * TARIFF_RATE);
-  }
+  const handleCustomerTypeChange = (type: 'residential' | 'commercial') => {
+    setCustomerType(type);
+    const newRate = type === 'residential' ? 8.0 : 9.5;
+    const derivedBill = Math.round(systemKw * UNITS_PER_KW_MONTH * newRate);
+    setMonthlyBill(Math.min(60000, Math.max(1500, derivedBill)));
+  };
 
   // Required Shadow-free Roof Space (Standard: 90 sq ft per 1 kW for modern monocrystalline panels)
-  const requiredRoofSqFt = Math.round(effectiveKw * 90);
-
-  // System Gross Cost (Benchmark Tier-1 DCR installation rates in India)
-  const costPerKw = effectiveKw <= 3 ? 60000 : effectiveKw <= 10 ? 55000 : 48000;
-  const grossCost = Math.round(effectiveKw * costPerKw);
-
-  // PM Surya Ghar Muft Bijli Yojana Central Govt Subsidy (Direct Benefit Transfer - Residential Only)
-  let govtSubsidy = 0;
-  if (customerType === 'residential') {
-    if (effectiveKw >= 3) {
-      govtSubsidy = 78000; // Capped max for 3 kW and above
-    } else if (effectiveKw >= 2) {
-      govtSubsidy = 60000; // ₹30,000 x 2 kW
-    } else if (effectiveKw >= 1) {
-      govtSubsidy = 30000; // ₹30,000 for 1 kW
-    }
-  }
-
-  // Net System Cost After Government Subsidy
-  const netInvestment = Math.max(0, grossCost - govtSubsidy);
+  const requiredRoofSqFt = Math.round(systemKw * 90);
 
   // Solar Monthly Generation & Financial Savings
-  const monthlySolarGenUnits = Math.round(effectiveKw * UNITS_PER_KW_MONTH);
-  const estMonthlySavings = Math.round(Math.min(effectiveBill, monthlySolarGenUnits * TARIFF_RATE));
+  const monthlySolarGenUnits = Math.round(systemKw * UNITS_PER_KW_MONTH);
+  const estMonthlySavings = Math.round(Math.min(monthlyBill, monthlySolarGenUnits * TARIFF_RATE));
   const estAnnualSavings = estMonthlySavings * 12;
   const est25YrSavings = estAnnualSavings * 25;
-  const billReductionPct = Math.min(95, Math.round((estMonthlySavings / effectiveBill) * 100));
-
-  // Payback Period (Years)
-  const paybackYears = estAnnualSavings > 0 ? (netInvestment / estAnnualSavings).toFixed(1) : '3.2';
 
   const handleWhatsAppConsult = () => {
-    const text = `Hi Tejomay! I used your Official Solar Savings Calculator.%0A- Sector: ${customerType.toUpperCase()}%0A- Input Mode: ${calcMode === 'bill' ? 'Monthly Bill' : 'System Size'}%0A- Monthly Bill: ₹${effectiveBill.toLocaleString('en-IN')}/mo%0A- Recommended Solar: ${effectiveKw} kW%0A- Roof Space Required: ${requiredRoofSqFt} sq ft%0A- Est. Net Cost: ₹${Math.round(netInvestment).toLocaleString('en-IN')} (Govt Subsidy: ₹${govtSubsidy.toLocaleString('en-IN')})%0A- Est. Annual Savings: ₹${Math.round(estAnnualSavings).toLocaleString('en-IN')}/yr%0A- 25-Year Savings: ₹${(est25YrSavings / 100000).toFixed(1)} Lakhs%0A- Payback Period: ~${paybackYears} Years%0APlease arrange a free technical site survey!`;
+    const text = `Hi Tejomay! I used your Official Solar Savings Calculator.%0A- Sector: ${customerType.toUpperCase()}%0A- Monthly Bill: ₹${monthlyBill.toLocaleString('en-IN')}/mo%0A- Recommended Solar: ${systemKw} kW%0A- Roof Space Required: ${requiredRoofSqFt} sq ft%0A- Est. Annual Savings: ₹${Math.round(estAnnualSavings).toLocaleString('en-IN')}/yr%0A- 25-Year Savings: ₹${(est25YrSavings / 100000).toFixed(1)} Lakhs%0APlease arrange a free technical site survey!`;
     window.open(`https://wa.me/918468903255?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
@@ -323,20 +293,17 @@ export default function HeroSection({
 
         {/* Subtitle */}
         <p style={{ fontSize: '0.8rem', color: '#475569', marginBottom: '1.25rem', lineHeight: 1.5 }}>
-          Calculate your rooftop solar capacity, central government subsidy, and electricity bill savings based on official MNRE benchmarks.
+          Calculate your rooftop solar capacity, terrace area requirement, and electricity bill savings based on official MNRE benchmarks.
         </p>
 
-        {/* Step 1: Customer Type Switcher (Residential vs Commercial) */}
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            1. Sector Type
-          </label>
+        {/* Sector Switcher (Residential vs Commercial) */}
+        <div style={{ marginBottom: '1.25rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', background: '#f1f5f9', padding: '0.35rem', borderRadius: '10px' }}>
             <button
               type="button"
-              onClick={() => setCustomerType('residential')}
+              onClick={() => handleCustomerTypeChange('residential')}
               style={{
-                padding: '0.5rem',
+                padding: '0.55rem',
                 borderRadius: '8px',
                 border: 'none',
                 background: customerType === 'residential' ? '#0f172a' : 'transparent',
@@ -356,9 +323,9 @@ export default function HeroSection({
             </button>
             <button
               type="button"
-              onClick={() => setCustomerType('commercial')}
+              onClick={() => handleCustomerTypeChange('commercial')}
               style={{
-                padding: '0.5rem',
+                padding: '0.55rem',
                 borderRadius: '8px',
                 border: 'none',
                 background: customerType === 'commercial' ? '#0f172a' : 'transparent',
@@ -374,95 +341,57 @@ export default function HeroSection({
           </div>
         </div>
 
-        {/* Step 2: Calculation Mode Switcher (By Monthly Bill vs By System Size) */}
-        <div style={{ marginBottom: '1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-            <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              2. Calculate By
-            </label>
-            <div style={{ display: 'inline-flex', background: '#e2e8f0', borderRadius: '6px', padding: '2px' }}>
-              <button
-                type="button"
-                onClick={() => setCalcMode('bill')}
-                style={{
-                  border: 'none',
-                  background: calcMode === 'bill' ? '#ffffff' : 'transparent',
-                  color: calcMode === 'bill' ? '#0f172a' : '#64748b',
-                  fontWeight: calcMode === 'bill' ? 700 : 500,
-                  fontSize: '0.7rem',
-                  padding: '0.2rem 0.55rem',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                Monthly Bill (₹)
-              </button>
-              <button
-                type="button"
-                onClick={() => setCalcMode('capacity')}
-                style={{
-                  border: 'none',
-                  background: calcMode === 'capacity' ? '#ffffff' : 'transparent',
-                  color: calcMode === 'capacity' ? '#0f172a' : '#64748b',
-                  fontWeight: calcMode === 'capacity' ? 700 : 500,
-                  fontSize: '0.7rem',
-                  padding: '0.2rem 0.55rem',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                Solar Size (kW)
-              </button>
+        {/* Both Sliders: Monthly Bill AND Solar System Size (Stacked one below another) */}
+        <div style={{ marginBottom: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+          
+          {/* Slider 1: Monthly Electricity Bill */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>Average Monthly Electricity Bill:</span>
+              <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-outfit)' }}>
+                ₹{monthlyBill.toLocaleString('en-IN')} / mo
+              </span>
+            </div>
+            <input
+              type="range"
+              min={1500}
+              max={60000}
+              step={500}
+              value={monthlyBill}
+              onChange={(e) => handleBillChange(Number(e.target.value))}
+              style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
+              <span>₹1,500</span>
+              <span>₹25,000</span>
+              <span>₹60,000+</span>
             </div>
           </div>
 
-          {calcMode === 'bill' ? (
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Average Monthly Electricity Bill:</span>
-                <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-outfit)' }}>
-                  ₹{monthlyBill.toLocaleString('en-IN')} / mo
-                </span>
-              </div>
-              <input
-                type="range"
-                min={1500}
-                max={60000}
-                step={500}
-                value={monthlyBill}
-                onChange={(e) => handleBillChange(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
-              />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
-                <span>₹1,500</span>
-                <span>₹25,000</span>
-                <span>₹60,000+</span>
-              </div>
+          {/* Slider 2: Desired Solar System Size (kW) */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>Recommended Solar System Size:</span>
+              <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-outfit)' }}>
+                {systemKw} kW System
+              </span>
             </div>
-          ) : (
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Desired Solar System Size:</span>
-                <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-outfit)' }}>
-                  {systemKw} kW System
-                </span>
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={25}
-                step={0.5}
-                value={systemKw}
-                onChange={(e) => handleKwChange(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
-              />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
-                <span>1 kW</span>
-                <span>10 kW</span>
-                <span>25 kW</span>
-              </div>
+            <input
+              type="range"
+              min={1}
+              max={25}
+              step={0.5}
+              value={systemKw}
+              onChange={(e) => handleKwChange(Number(e.target.value))}
+              style={{ width: '100%', accentColor: '#6BAE23', cursor: 'pointer', height: '6px' }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.25rem' }}>
+              <span>1 kW</span>
+              <span>10 kW</span>
+              <span>25 kW</span>
             </div>
-          )}
+          </div>
+
         </div>
 
         {/* Dynamic System Output Specs Badge */}
@@ -477,11 +406,11 @@ export default function HeroSection({
           marginBottom: '1rem'
         }}>
           <div>
-            <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Recommended Solar</span>
+            <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Estimated Energy Output</span>
             <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-outfit)' }}>
-              {effectiveKw} kW System
+              ~ {monthlySolarGenUnits} Units
             </div>
-            <span style={{ fontSize: '0.65rem', color: '#64748b' }}>~ {monthlySolarGenUnits} Units / mo</span>
+            <span style={{ fontSize: '0.65rem', color: '#64748b' }}>per month</span>
           </div>
 
           <div>
@@ -493,7 +422,7 @@ export default function HeroSection({
           </div>
         </div>
 
-        {/* Financial Results Matrix (Only Important Metrics) */}
+        {/* Financial Results Matrix (Annual Savings & 25-Year Lifetime Savings) */}
         <div style={{
           background: 'rgba(68, 217, 68, 0.1)',
           borderRadius: '14px',
@@ -502,7 +431,7 @@ export default function HeroSection({
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '0.75rem',
-          marginBottom: 0
+          marginBottom: '1.25rem'
         }}>
           <div>
             <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Est. Annual Savings</span>
@@ -513,43 +442,34 @@ export default function HeroSection({
           </div>
 
           <div>
-            <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Net Investment Cost</span>
+            <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>25-Year Lifetime Savings</span>
             <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0b131f', fontFamily: 'var(--font-outfit)' }}>
-              ₹{netInvestment.toLocaleString('en-IN')}
+              ₹{(est25YrSavings / 100000).toFixed(1)} Lakhs
             </div>
-            <span style={{ fontSize: '0.65rem', color: '#64748b', textDecoration: govtSubsidy > 0 ? 'line-through' : 'none' }}>
-              ₹{grossCost.toLocaleString('en-IN')}
-            </span>
-          </div>
-
-          {customerType === 'residential' && (
-            <div>
-              <span style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 700, textTransform: 'uppercase' }}>Govt Subsidy (Surya Ghar)</span>
-              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#15803d' }}>
-                - ₹{govtSubsidy.toLocaleString('en-IN')}
-              </div>
-              <span style={{ fontSize: '0.63rem', color: '#166534' }}>Direct Benefit Transfer</span>
-            </div>
-          )}
-
-          {customerType === 'commercial' && (
-            <div>
-              <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Tax Depreciation</span>
-              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>
-                40% Accelerated
-              </div>
-              <span style={{ fontSize: '0.63rem', color: '#64748b' }}>IT Act Section 32</span>
-            </div>
-          )}
-
-          <div>
-            <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Payback Period</span>
-            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>
-              ~ {paybackYears} Years
-            </div>
-            <span style={{ fontSize: '0.63rem', color: '#15803d', fontWeight: 600 }}>25-Yr ROI: ₹{(est25YrSavings / 100000).toFixed(1)}L</span>
+            <span style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 600 }}>Full 25-Yr System Life</span>
           </div>
         </div>
+
+        {/* WhatsApp Consult Button inside the Drawer */}
+        <button
+          onClick={handleWhatsAppConsult}
+          className="btn-lime"
+          style={{
+            width: '100%',
+            padding: '0.85rem 1rem',
+            borderRadius: '12px',
+            fontSize: '0.88rem',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            boxShadow: '0 8px 20px rgba(68, 217, 68, 0.3)'
+          }}
+        >
+          <img src="/call-icon.png" alt="WhatsApp" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
+          <span>Consult Solar Engineer ↗</span>
+        </button>
 
       </div>
 
