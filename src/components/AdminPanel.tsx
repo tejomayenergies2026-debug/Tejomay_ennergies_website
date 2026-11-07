@@ -469,13 +469,6 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
             </button>
 
             <button 
-              onClick={handleResetData} 
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: headerTextColor, padding: '0.6rem 1.1rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-            >
-              🔄 Reset Defaults
-            </button>
-
-            <button 
               onClick={onClose} 
               style={{ background: '#44D944', border: 'none', color: '#0b131f', padding: '0.6rem 1.25rem', borderRadius: '10px', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(68, 217, 68, 0.3)' }}
             >
@@ -511,13 +504,13 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
               boxShadow: activeSection === 'services' ? '0 12px 30px rgba(68, 217, 68, 0.25)' : 'none'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
               <span>📦 SECTION 1: Services & Sub-Services</span>
               <span style={{ fontSize: '0.8rem', background: '#44D944', color: '#0b131f', padding: '0.25rem 0.7rem', borderRadius: '8px', fontWeight: 800 }}>
                 {services.length} Cards
               </span>
             </div>
-            <p style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.7)', marginTop: '0.4rem', fontWeight: 500, margin: 0 }}>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0, fontWeight: 500, lineHeight: 1.5 }}>
               Alter Commercial, Residential, Industrial, Turnkey EPC, and AMC Shield sub-services data & images.
             </p>
           </button>
@@ -539,13 +532,13 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
               boxShadow: activeSection === 'workDone' ? '0 12px 30px rgba(68, 217, 68, 0.25)' : 'none'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
               <span>🏆 SECTION 2: Work Done & Testimonials</span>
               <span style={{ fontSize: '0.8rem', background: '#44D944', color: '#0b131f', padding: '0.25rem 0.7rem', borderRadius: '8px', fontWeight: 800 }}>
                 {testimonials.length} Cards
               </span>
             </div>
-            <p style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.7)', marginTop: '0.4rem', fontWeight: 500, margin: 0 }}>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0, fontWeight: 500, lineHeight: 1.5 }}>
               Alter Residential & Industrial/Commercial completed project review cards and client photos.
             </p>
           </button>
