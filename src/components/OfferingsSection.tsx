@@ -49,7 +49,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
   }, []);
 
   const handleWhatsApp = (serviceTitle: string) => {
-    window.open(`https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20inquire%20about%20${encodeURIComponent(serviceTitle)}`, '_blank');
+    window.open(`https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20inquire%20about%20${encodeURIComponent(serviceTitle)}`, '_blank', 'noopener,noreferrer');
   };
 
   const getAvifFallback = (cat: string) => {

@@ -24,7 +24,7 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
   };
 
   const handleWhatsApp = () => {
-    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank");
+    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank", "noopener,noreferrer");
   };
 
   return (

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function PotentialSection() {
   const openMaps = (query: string) => {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank', 'noopener,noreferrer');
   };
 
   const callPhone = (phone: string) => {

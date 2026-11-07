@@ -959,7 +959,12 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
                   <input
                     type="text"
                     value={serviceForm.image || ''}
-                    onChange={(e) => setServiceForm({ ...serviceForm, image: e.target.value })}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (!v.toLowerCase().startsWith('javascript:') && !v.toLowerCase().startsWith('data:text')) {
+                        setServiceForm({ ...serviceForm, image: v });
+                      }
+                    }}
                     placeholder="/solar2.avif or URL"
                     style={{ flex: 1, background: modalInputBg, border: modalInputBorder, borderRadius: '8px', padding: '0.55rem 0.85rem', color: modalTextColor, fontSize: '0.82rem', fontWeight: 600, outline: 'none' }}
                   />
@@ -1138,7 +1143,12 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
                   <input
                     type="text"
                     value={testimonialForm.photo || ''}
-                    onChange={(e) => setTestimonialForm({ ...testimonialForm, photo: e.target.value })}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (!v.toLowerCase().startsWith('javascript:') && !v.toLowerCase().startsWith('data:text')) {
+                        setTestimonialForm({ ...testimonialForm, photo: v });
+                      }
+                    }}
                     placeholder="/solar1_custom.jpeg or URL"
                     style={{ flex: 1, background: modalInputBg, border: modalInputBorder, borderRadius: '8px', padding: '0.55rem 0.85rem', color: modalTextColor, fontSize: '0.82rem', fontWeight: 600, outline: 'none' }}
                   />

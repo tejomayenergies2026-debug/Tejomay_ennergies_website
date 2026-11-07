@@ -194,10 +194,10 @@ export default function WhySonoraSection() {
 
                   {/* Social Buttons */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-                    <a href={founder.linkedin} target="_blank" rel="noreferrer" style={socialBtnStyle}>
+                    <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
                       <span>LinkedIn ↗</span>
                     </a>
-                    <a href={founder.twitter} target="_blank" rel="noreferrer" style={socialBtnStyle}>
+                    <a href={founder.twitter} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
                       <span>X ↗</span>
                     </a>
                     <a href={`mailto:${founder.email}`} style={{ ...socialBtnStyle, background: '#6BAE23', color: '#0b131f', boxShadow: '0 4px 12px rgba(68, 217, 68, 0.3)' }}>

@@ -1,7 +1,3 @@
--- ==============================================================================
--- TEJOMAY ENERGIES - OFFICIAL SUPABASE DATABASE SCHEMA & SECURITY HARDENING
--- Project: https://etuzyondtjnczflnawtc.supabase.co
--- ==============================================================================
 
 -- 1. CLEANUP (Drop if recreating)
 DROP TABLE IF EXISTS public.services CASCADE;
