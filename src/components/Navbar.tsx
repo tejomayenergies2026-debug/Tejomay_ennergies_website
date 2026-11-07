@@ -102,7 +102,7 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
                   whiteSpace: 'nowrap'
                 }}
               >
-                ⚡ Admin
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}><img src="/lightning-icon.png" alt="Admin" style={{ width: '13px', height: '13px', objectFit: 'contain' }} />Admin</span>
               </button>
             </>
           )}
@@ -209,7 +209,7 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
                 fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer'
               }}
             >
-              ⚡ Admin
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}><img src="/lightning-icon.png" alt="Admin" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />Admin</span>
             </button>
           )}
           <button

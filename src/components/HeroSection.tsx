@@ -220,7 +220,10 @@ export default function HeroSection({
         onClick={() => setIsCalculatorOpen(!isCalculatorOpen)}
         className="calc-side-tab"
       >
-        <span>⚡ SOLAR CALCULATOR</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+          <img src="/lightning-icon.png" alt="Solar" style={{ width: '13px', height: '13px', objectFit: 'contain' }} />
+          SOLAR CALCULATOR
+        </span>
         <span 
           style={{ 
             display: 'inline-block', 
@@ -264,7 +267,9 @@ export default function HeroSection({
         {/* Calculator Header with Close Icon */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ background: '#6BAE23', color: '#0b131f', width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>⚡</span>
+            <span style={{ background: '#6BAE23', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img src="/lightning-icon.png" alt="Solar" style={{ width: '15px', height: '15px', objectFit: 'contain' }} />
+            </span>
             <h3 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.2rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
               Solar Cost & Savings Calculator
             </h3>

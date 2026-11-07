@@ -178,8 +178,9 @@ export default function TestimonialsSection() {
 
                     {/* Front Bottom Label */}
                     <div style={{ position: 'absolute', bottom: '1.4rem', left: '1.4rem', right: '1.4rem' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', background: '#44D944', padding: '0.35rem 0.8rem', borderRadius: '6px' }}>
-                        ⚡ {item.projectCapacity}
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0b131f', background: '#44D944', padding: '0.35rem 0.8rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <img src="/lightning-icon.png" alt="Capacity" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
+                        {item.projectCapacity}
                       </span>
                       <h4 style={{ color: '#ffffff', fontWeight: 700, fontSize: '1.25rem', marginTop: '0.5rem', fontFamily: 'var(--font-outfit)' }}>
                         {item.companyOrLocation}
@@ -196,8 +197,9 @@ export default function TestimonialsSection() {
                     <div style={{ width: '100%', minWidth: 0 }}>
                       {/* Top Capacity Badge & Date */}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', gap: '0.5rem', width: '100%', minWidth: 0 }}>
-                        <span className="truncate-1" style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0f172a', background: 'rgba(68, 217, 68, 0.3)', padding: '0.35rem 0.85rem', borderRadius: '9999px', flexShrink: 0, maxWidth: '62%' }}>
-                          ⚡ {item.projectCapacity}
+                        <span className="truncate-1" style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0f172a', background: 'rgba(68, 217, 68, 0.3)', padding: '0.35rem 0.85rem', borderRadius: '9999px', flexShrink: 0, maxWidth: '62%', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <img src="/lightning-icon.png" alt="Capacity" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
+                          {item.projectCapacity}
                         </span>
                         <span className="truncate-1" style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 500, maxWidth: '38%', textAlign: 'right', flexShrink: 1 }}>
                           {item.date}

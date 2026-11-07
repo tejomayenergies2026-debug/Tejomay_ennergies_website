@@ -54,7 +54,7 @@ export default function EpcDetailsPage({ onBack }: EpcDetailsPageProps) {
             display: 'inline-block',
             textTransform: 'uppercase'
           }}>
-            ⚡ VERTICAL PILLAR 02 — TURNKEY EPC DEEP DIVE
+            <img src="/lightning-icon.png" alt="Pillar" style={{ width: '14px', height: '14px', objectFit: 'contain', verticalAlign: '-1px', marginRight: '6px' }} />VERTICAL PILLAR 02 — TURNKEY EPC DEEP DIVE
           </span>
         </div>
 
@@ -119,7 +119,7 @@ export default function EpcDetailsPage({ onBack }: EpcDetailsPageProps) {
 
           {/* Module 3 */}
           <div style={{ background: '#ffffff', borderRadius: '24px', padding: '2.25rem', border: '1px solid rgba(11, 19, 31, 0.08)', boxShadow: '0 20px 45px rgba(11, 19, 31, 0.12)' }}>
-            <span style={{ fontSize: '2.2rem', display: 'block', marginBottom: '1rem' }}>⚡</span>
+            <img src="/lightning-icon.png" alt="Net-Metering" style={{ width: '38px', height: '38px', objectFit: 'contain', display: 'block', marginBottom: '1rem' }} />
             <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#0b131f', marginBottom: '0.5rem', fontFamily: 'var(--font-outfit)' }}>
               3. DISCOM Net-Metering Approval
             </h3>
