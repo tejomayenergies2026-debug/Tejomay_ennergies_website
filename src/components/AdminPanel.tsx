@@ -128,6 +128,17 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image file size exceeds the 5 MB limit. Please select an image under 5 MB.');
+      e.target.value = '';
+      return;
+    }
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      alert('Invalid image format. Please select a JPG, PNG, or WebP file.');
+      e.target.value = '';
+      return;
+    }
+
     // Stage the file locally
     setPendingServiceFile(file);
 
@@ -143,6 +154,17 @@ export default function AdminPanel({ onClose, onLogout }: AdminPanelProps) {
   const handleTestimonialImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image file size exceeds the 5 MB limit. Please select an image under 5 MB.');
+      e.target.value = '';
+      return;
+    }
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      alert('Invalid image format. Please select a JPG, PNG, or WebP file.');
+      e.target.value = '';
+      return;
+    }
 
     // Stage the file locally
     setPendingTestimonialFile(file);

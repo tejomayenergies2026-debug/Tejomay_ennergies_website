@@ -150,6 +150,11 @@ export async function replaceAllTestimonials(items: TestimonialItem[]): Promise<
 
 export async function uploadImage(file: File, folder: 'services' | 'testimonials'): Promise<string | null> {
   try {
+    if (file.size > 5 * 1024 * 1024) {
+      console.error('[Supabase] File exceeds 5MB storage limit.');
+      return null;
+    }
+
     const ext = file.name.split('.').pop();
     const fileName = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
 
