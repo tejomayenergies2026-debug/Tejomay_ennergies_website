@@ -113,7 +113,10 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
               className="btn-lime"
               style={{ padding: '0.5rem 1.25rem', fontSize: '0.82rem', borderRadius: '9999px', fontWeight: 700, whiteSpace: 'nowrap' }}
             >
-              <span>Book a Call ↗</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                <img src="/call-icon.png" alt="Call" style={{ width: '14px', height: '14px', borderRadius: '50%' }} />
+                Book a Call ↗
+              </span>
             </button>
           </div>
         </div>
@@ -214,7 +217,10 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
             className="btn-lime"
             style={{ flex: 1, padding: '0.85rem', fontSize: '0.95rem', borderRadius: '12px', justifyContent: 'center' }}
           >
-            <span>Book a Call ↗</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+              <img src="/call-icon.png" alt="Call" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
+              Book a Call ↗
+            </span>
           </button>
         </div>
       </div>

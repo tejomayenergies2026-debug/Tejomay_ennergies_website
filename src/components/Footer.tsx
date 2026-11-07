@@ -74,8 +74,9 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
             </h4>
             <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.7 }}>
               📍 Metro Solar Tower, Sector 62<br />
-              <a href="tel:+918468903255" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
-                📞 +91 8468903255
+              <a href="tel:+918468903255" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                <img src="/call-icon.png" alt="Call" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
+                +91 8468903255
               </a><br />
               <a href="mailto:support@tejomay.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
                 ✉️ support@tejomay.com

@@ -344,10 +344,15 @@ export default function HeroSection({
                 fontWeight: customerType === 'residential' ? 700 : 500,
                 fontSize: '0.78rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem'
               }}
             >
-              🏠 Residential Home
+              <img src="/house-icon.png" alt="Residential" style={{ width: '15px', height: '15px', borderRadius: '3px' }} />
+              Residential Home
             </button>
             <button
               type="button"

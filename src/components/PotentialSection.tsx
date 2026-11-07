@@ -162,10 +162,15 @@ export default function PotentialSection() {
                     cursor: 'pointer',
                     flex: 1.3,
                     textAlign: 'center',
-                    transition: 'background 0.2s ease'
+                    transition: 'background 0.2s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem'
                   }}
                 >
-                  📞 Call: +91 98765 43210 ↗
+                  <img src="/call-icon.png" alt="Call" style={{ width: '18px', height: '18px', borderRadius: '50%' }} />
+                  <span>Call: +91 8468903255 ↗</span>
                 </button>
               </div>
             </div>
@@ -289,10 +294,15 @@ export default function PotentialSection() {
                     cursor: 'pointer',
                     flex: 1.3,
                     textAlign: 'center',
-                    transition: 'background 0.2s ease'
+                    transition: 'background 0.2s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem'
                   }}
                 >
-                  📞 Call: +91 98765 43211 ↗
+                  <img src="/call-icon.png" alt="Call" style={{ width: '18px', height: '18px', borderRadius: '50%' }} />
+                  <span>Call: +91 8468903255 ↗</span>
                 </button>
               </div>
             </div>
