@@ -102,10 +102,9 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {[
                 { name: 'LinkedIn', url: 'https://www.linkedin.com/company/tejomay-energies' },
-                { name: 'X / Twitter', url: 'https://x.com/tejomayenergies' },
-                { name: 'Instagram', url: 'https://www.instagram.com/tejomayenergies' },
-                { name: 'YouTube', url: 'https://www.youtube.com/@tejomayenergies' },
-                { name: 'Facebook', url: 'https://www.facebook.com/tejomayenergies' }
+                { name: 'Facebook', url: 'https://www.facebook.com/TejomayEnergies01/posts/pfbid0gckV3Rwt31wNmFutjhbevNdTENgEse6hJF4eNaYo98MGpmhsWh3fZGjFWowHjNkXl' },
+                { name: 'Instagram', url: 'https://www.instagram.com/p/Ddwc7A8EzwE/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==' },
+                { name: 'YouTube', url: 'https://youtube.com/shorts/22blAtyNJq8?feature=share' }
               ].map((soc, idx) => (
                 <a
                   key={idx}
