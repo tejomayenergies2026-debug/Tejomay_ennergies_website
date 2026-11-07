@@ -78,9 +78,9 @@ export default function App() {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  // Stealth Access Layer 1: Secret URL triggers (e.g. #/x9k2-admin or ?portal=admin)
+  // Administrative Route Handlers
   useEffect(() => {
-    const checkSecretRoute = () => {
+    const checkAdminRoute = () => {
       const hash = window.location.hash.toLowerCase();
       const search = window.location.search.toLowerCase();
       if (
@@ -89,7 +89,7 @@ export default function App() {
         search.includes('admin=tejomay') || 
         search.includes('portal=admin')
       ) {
-        // Clear secret hash from browser bar to maintain stealth
+        // Reset location parameters
         if (window.history.replaceState) {
           window.history.replaceState(null, '', window.location.pathname);
         }
@@ -97,12 +97,12 @@ export default function App() {
       }
     };
 
-    checkSecretRoute();
-    window.addEventListener('hashchange', checkSecretRoute);
-    return () => window.removeEventListener('hashchange', checkSecretRoute);
+    checkAdminRoute();
+    window.addEventListener('hashchange', checkAdminRoute);
+    return () => window.removeEventListener('hashchange', checkAdminRoute);
   }, [isAdminLoggedIn]);
 
-  // Stealth Access Layer 2: Keyboard shortcut (Ctrl + Shift + A / Cmd + Shift + A)
+  // Administrative Access Keyboard Handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -166,7 +166,7 @@ export default function App() {
         />
         <EpcDetailsPage onBack={() => setIsEpcDetailsPageOpen(false)} />
         <Footer 
-          onSecretAdminTrigger={handleOpenAdminClick} 
+          onAdminTrigger={handleOpenAdminClick} 
           onOpenLegal={(type) => setLegalModalState({ isOpen: true, type })}
         />
       </div>
@@ -209,7 +209,7 @@ export default function App() {
 
       {/* Section 7: Footer */}
       <Footer 
-        onSecretAdminTrigger={handleOpenAdminClick} 
+        onAdminTrigger={handleOpenAdminClick} 
         onOpenLegal={(type) => setLegalModalState({ isOpen: true, type })}
       />
 

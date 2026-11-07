@@ -2,15 +2,15 @@ import React from 'react';
 import TejomayLogo from './TejomayLogo';
 
 interface FooterProps {
-  onSecretAdminTrigger?: () => void;
+  onAdminTrigger?: () => void;
   onOpenLegal?: (type: 'privacy' | 'terms') => void;
 }
 
-export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProps) {
+export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
   const clickCountRef = React.useRef(0);
   const clickTimerRef = React.useRef<number | null>(null);
 
-  const handleSecretCopyrightClick = () => {
+  const handleCopyrightClick = () => {
     clickCountRef.current += 1;
     if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
     clickTimerRef.current = window.setTimeout(() => {
@@ -19,7 +19,7 @@ export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProp
 
     if (clickCountRef.current >= 3) {
       clickCountRef.current = 0;
-      onSecretAdminTrigger?.();
+      onAdminTrigger?.();
     }
   };
 
@@ -152,7 +152,7 @@ export default function Footer({ onSecretAdminTrigger, onOpenLegal }: FooterProp
           fontSize: '0.78rem'
         }}>
           <div 
-            onClick={handleSecretCopyrightClick} 
+            onClick={handleCopyrightClick} 
             title="© 2026 Tejomay Energies Ltd."
             style={{ cursor: 'default', userSelect: 'none' }}
           >

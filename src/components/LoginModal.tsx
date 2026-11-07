@@ -79,7 +79,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
   // Honeypot field (bots fill this, real users don't see it)
   const honeypotRef = useRef<HTMLInputElement>(null);
 
-  // Secret Emergency Unlock Tap Counter (Tapping lock icon 5 times resets lockout)
+  // Security state reset handler
   const lockTapRef = useRef(0);
   const lockTimerRef = useRef<number | null>(null);
 
@@ -708,7 +708,10 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button
                 type="button"
-                onClick={finalizeSuccess}
+                onClick={() => {
+                  setStep('credentials');
+                  setError('');
+                }}
                 style={{
                   flex: 1,
                   background: 'rgba(255, 255, 255, 0.08)',
@@ -721,7 +724,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
                   cursor: 'pointer'
                 }}
               >
-                Skip For Now
+                Cancel
               </button>
               <button
                 type="submit"
