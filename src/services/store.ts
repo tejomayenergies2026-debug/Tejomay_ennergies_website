@@ -173,13 +173,13 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
 const DEFAULT_FOUNDERS: FounderItem[] = [
   {
     id: "found-1",
-    name: "Aarav Malhotra",
+    name: "Pratik Pardeshi",
     role: "Founder & Chief Executive Officer",
     bio: "“We believe the next era of growth will be powered by clean energy, intelligent technology, and sustainable thinking—and we are committed to being part of that transformation.”",
     photo: "/founder1.jpeg",
-    linkedin: "https://www.linkedin.com/company/tejomay-energies",
-    twitter: "https://twitter.com",
-    email: "tejomayenergies@gmail.com"
+    linkedin: "",
+    twitter: "",
+    email: ""
   }
 ];
 

@@ -173,7 +173,7 @@ export default function WhySonoraSection() {
                 </div>
 
                 {/* Founder Details */}
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between', padding: isMobile ? '0' : '0.2rem 0', minWidth: 0 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', padding: isMobile ? '0' : '0.2rem 0', minWidth: 0 }}>
                   <div>
                     {!isMobile && (
                       <>
@@ -187,22 +187,9 @@ export default function WhySonoraSection() {
                       </>
                     )}
 
-                    <p style={{ color: '#475569', fontSize: isMobile ? '0.88rem' : '0.85rem', lineHeight: 1.6, marginBottom: '1.1rem' }}>
+                    <p style={{ color: '#475569', fontSize: isMobile ? '0.88rem' : '0.85rem', lineHeight: 1.6, margin: 0 }}>
                       {founder.bio}
                     </p>
-                  </div>
-
-                  {/* Social Buttons */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-                    <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      <span>LinkedIn ↗</span>
-                    </a>
-                    <a href={founder.twitter} target="_blank" rel="noopener noreferrer" style={socialBtnStyle}>
-                      <span>X ↗</span>
-                    </a>
-                    <a href={`mailto:${founder.email}`} style={{ ...socialBtnStyle, background: '#6BAE23', color: '#0b131f', boxShadow: '0 4px 12px rgba(68, 217, 68, 0.3)' }}>
-                      <span>Email ✉</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -214,17 +201,3 @@ export default function WhySonoraSection() {
     </section>
   );
 }
-
-const socialBtnStyle: React.CSSProperties = {
-  background: '#0b131f',
-  color: '#ffffff',
-  padding: '0.4rem 0.75rem',
-  borderRadius: '8px',
-  fontSize: '0.75rem',
-  fontWeight: 700,
-  textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.3rem',
-  transition: 'all 0.2s ease'
-};
