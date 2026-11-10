@@ -11,7 +11,7 @@ export default function EpcDetailsPage({ onBack }: EpcDetailsPageProps) {
   }, []);
 
   const handleWhatsApp = () => {
-    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20inquire%20about%20Turnkey%20EPC%20Solutions%20(Engineering%2C%20Procurement%20%26%20Construction)", "_blank", "noopener,noreferrer");
+    window.open("https://wa.me/917447449534?text=Hi%20Tejomay%2C%20I%20want%20to%20inquire%20about%20Turnkey%20EPC%20Solutions%20(Engineering%2C%20Procurement%20%26%20Construction)", "_blank", "noopener,noreferrer");
   };
 
   return (

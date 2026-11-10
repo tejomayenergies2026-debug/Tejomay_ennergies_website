@@ -24,7 +24,7 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
   };
 
   const handleWhatsApp = () => {
-    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank", "noopener,noreferrer");
+    window.open("https://wa.me/917447449534?text=Hi%20Tejomay%2C%20I%20want%20to%20connect%20with%20your%20solar%20team", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -77,12 +77,12 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
                 <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
                 Metro Solar Tower, Sector 62
               </span><br />
-              <a href="tel:+918468903255" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+              <a href="tel:+917447449534" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
                 <img src="/call-icon.png" alt="Call" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
-                +91 8468903255
+                +91 744 744 9534
               </a><br />
-              <a href="mailto:support@tejomay.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
-                ✉️ support@tejomay.com
+              <a href="mailto:tejomayenergies@gmail.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
+                ✉️ tejomayenergies@gmail.com
               </a>
             </p>
             <button

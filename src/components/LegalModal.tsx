@@ -130,7 +130,7 @@ export default function LegalModal({ isOpen, type, onClose }: LegalModalProps) {
 
               <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>4. Your Rights</h4>
               <p>
-                Under the DPDP Act, you have the right to request access to your submitted data, request corrections, or ask for complete deletion of your records from our systems by emailing <strong>support@tejomay.com</strong>.
+                Under the DPDP Act, you have the right to request access to your submitted data, request corrections, or ask for complete deletion of your records from our systems by emailing <strong>tejomayenergies@gmail.com</strong>.
               </p>
             </div>
           ) : (

@@ -11,7 +11,7 @@ export default function Navbar({ onOpenAdmin, isAdminLoggedIn, onToggleCalculato
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleWhatsApp = () => {
-    window.open("https://wa.me/918468903255?text=Hi%20Tejomay%2C%20I%20would%20like%20to%20book%20a%20solar%20consultation", "_blank", "noopener,noreferrer");
+    window.open("https://wa.me/917447449534?text=Hi%20Tejomay%2C%20I%20would%20like%20to%20book%20a%20solar%20consultation", "_blank", "noopener,noreferrer");
   };
 
   const handleNavClick = (id: string) => {

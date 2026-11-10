@@ -179,7 +179,7 @@ const DEFAULT_FOUNDERS: FounderItem[] = [
     photo: "/founder1.jpeg",
     linkedin: "https://www.linkedin.com/company/tejomay-energies",
     twitter: "https://twitter.com",
-    email: "aarav@tejomay.com"
+    email: "tejomayenergies@gmail.com"
   }
 ];
 

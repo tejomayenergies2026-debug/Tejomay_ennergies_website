@@ -55,7 +55,7 @@ export default function HeroSection({
 
   const handleWhatsAppConsult = () => {
     const text = `Hi Tejomay! I used your Official Solar Savings Calculator.%0A- Sector: ${customerType.toUpperCase()}%0A- Monthly Bill: ₹${monthlyBill.toLocaleString('en-IN')}/mo%0A- Recommended Solar: ${systemKw} kW%0A- Roof Space Required: ${requiredRoofSqFt} sq ft%0A- Est. Annual Savings: ₹${Math.round(estAnnualSavings).toLocaleString('en-IN')}/yr%0A- 25-Year Savings: ₹${(est25YrSavings / 100000).toFixed(1)} Lakhs%0APlease arrange a free technical site survey!`;
-    window.open(`https://wa.me/918468903255?text=${text}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/917447449534?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
   // Words sequence for Lego 3D Pop-in Animation

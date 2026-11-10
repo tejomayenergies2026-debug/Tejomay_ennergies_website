@@ -156,7 +156,7 @@ export default function PotentialSection() {
                 </button>
 
                 <button
-                  onClick={() => callPhone('+91 8468903255')}
+                  onClick={() => callPhone('+91 744 744 9534')}
                   style={{
                     background: '#0b131f',
                     color: '#ffffff',
@@ -176,7 +176,7 @@ export default function PotentialSection() {
                   }}
                 >
                   <img src="/call-icon.png" alt="Call" style={{ width: '18px', height: '18px', borderRadius: '50%' }} />
-                  <span>Call: +91 8468903255 ↗</span>
+                  <span>Call: +91 744 744 9534 ↗</span>
                 </button>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function PotentialSection() {
                 </button>
 
                 <button
-                  onClick={() => callPhone('+91 8468903255')}
+                  onClick={() => callPhone('+91 744 744 9534')}
                   style={{
                     background: '#0b131f',
                     color: '#ffffff',
@@ -314,7 +314,7 @@ export default function PotentialSection() {
                   }}
                 >
                   <img src="/call-icon.png" alt="Call" style={{ width: '18px', height: '18px', borderRadius: '50%' }} />
-                  <span>Call: +91 8468903255 ↗</span>
+                  <span>Call: +91 744 744 9534 ↗</span>
                 </button>
               </div>
             </div>
