@@ -100,67 +100,67 @@ export default function LegalModal({ isOpen, type, onClose }: LegalModalProps) {
             <div>
               <p style={{ marginTop: 0 }}>
                 <strong>Effective Date:</strong> November 2026<br />
-                Tejomay Energies Ltd. (“Tejomay”, “we”, “our”) is dedicated to protecting your personal data in compliance with the <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> and international data security standards.
+                Tejomay Energies (“Tejomay”, “we”, “our”) values your privacy. This website is an informational and engineering simulation portal designed to respect your data under India's <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong>.
               </p>
 
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>1. Information We Collect</h4>
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>1. No Unsolicited Data Collection</h4>
               <p>
-                When you interact with our solar savings calculator or initiate a WhatsApp consultation, we collect information you voluntarily provide, including:
-              </p>
-              <ul style={{ paddingLeft: '1.2rem', marginBottom: '1rem' }}>
-                <li>Contact details: Name, phone/WhatsApp number, email address, and installation location/city.</li>
-                <li>Solar requirements: Estimated monthly electricity bills, roof type, and proposed load capacities (kW).</li>
-                <li>Technical metrics: Non-identifying browser telemetry and device parameters used to ensure website responsiveness.</li>
-              </ul>
-
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>2. How We Use Your Data</h4>
-              <p>
-                Your personal details are used exclusively to:
-              </p>
-              <ul style={{ paddingLeft: '1.2rem', marginBottom: '1rem' }}>
-                <li>Deliver tailored solar feasibility reports and financial ROI models.</li>
-                <li>Coordinate certified engineer site surveys and DISCOM net-metering liaison.</li>
-                <li>Process inquiries for state and central solar subsidies (e.g. PM Surya Ghar Muft Bijli Yojana).</li>
-              </ul>
-
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>3. Data Protection & Zero Third-Party Selling</h4>
-              <p>
-                We do not sell, rent, or trade your contact details with external marketing brokers or advertisers. All transmission is encrypted via TLS 1.3 / HTTPS. Internal access is restricted to authorized Tejomay solar engineers and project managers.
+                We do not require user accounts, passwords, or personal profiles to browse our website or use the solar savings calculator. All calculations run client-side in your browser.
               </p>
 
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>4. Your Rights</h4>
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>2. Voluntary Inquiries (WhatsApp & Direct Calls)</h4>
               <p>
-                Under the DPDP Act, you have the right to request access to your submitted data, request corrections, or ask for complete deletion of your records from our systems by emailing <strong>tejomayenergies@gmail.com</strong>.
+                When you choose to click <em>“Book a Call”</em>, <em>“WhatsApp Support”</em>, or phone us directly, you voluntarily transmit your contact number and inquiry details. This information is used strictly by our certified solar engineers to assess your rooftop feasibility and respond to your consultation request.
+              </p>
+
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>3. Zero Third-Party Sharing or Selling</h4>
+              <p>
+                We maintain a strict zero-spam policy: we never sell, rent, trade, or distribute your contact details to third-party marketing brokers, advertisers, or lead aggregators. All communication is private and encrypted via standard TLS 1.3 / HTTPS protocols.
+              </p>
+
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>4. Server Telemetry & Security</h4>
+              <p>
+                Standard, non-personally identifiable technical logs (such as IP addresses and browser types) are processed transiently by our cloud infrastructure (Vercel) purely to prevent malicious DDoS attacks, bot spam, and cybersecurity threats.
+              </p>
+
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>5. Contact & Data Inquiries</h4>
+              <p>
+                For any data questions, corrections, or inquiries, contact our compliance desk directly at <strong>tejomayenergies@gmail.com</strong> or call <strong>+91 744 744 9534</strong>.
               </p>
             </div>
           ) : (
             <div>
               <p style={{ marginTop: 0 }}>
-                <strong>Last Updated:</strong> November 2026<br />
-                By accessing the Tejomay Energies web application and using our solar assessment tools, you acknowledge and agree to the following terms and technical disclaimers.
+                <strong>Effective Date:</strong> November 2026<br />
+                By accessing <strong>tejomayenergies.com</strong> and using our solar evaluation tools, you agree to the following terms, protections, and engineering disclaimers.
               </p>
 
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>1. Solar Generation & Yield Estimation Disclaimer</h4>
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>1. Calculator & Simulation Disclaimer (Estimates Only)</h4>
               <p>
-                Figures generated by the interactive solar calculator (including annual units generated, payback period, and lifetime savings) are mathematical simulations based on standard solar irradiance benchmarks (approx. 4.5 to 5.5 peak sun hours per day) and prevailing DISCOM tariff structures. 
+                All calculations, energy outputs (kWh units), and financial returns displayed by our solar calculator are mathematical simulations based on regional irradiance benchmarks (approx. 4.5 to 5.5 peak sun hours/day) and standard DISCOM tariff schedules.
               </p>
               <p>
-                Actual generation may vary based on exact geographical coordinates, seasonal solar irradiance, rooftop orientation/azimuth, shading obstructions, and DISCOM grid availability. An on-site technical survey is mandatory before finalizing system capacity.
-              </p>
-
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>2. Turnkey EPC Quotations & Contracts</h4>
-              <p>
-                Online figures do not constitute a binding legal contract. Formal procurement, engineering design, warranty coverage (25-year linear performance warranty on Tier-1 panels, 5–10 years on inverters), and payment schedules are governed strictly by the signed Engineering, Procurement & Construction (EPC) agreement between Tejomay Energies Ltd. and the client.
+                These figures are provided for general planning purposes only and <strong>do not constitute a legally binding financial guarantee or warranty of electrical generation</strong>. Actual solar yields depend upon physical rooftop azimuth, shadow obstructions, tilt angles, seasonal weather variance, and grid availability. A certified on-site engineering survey is required before finalizing system design.
               </p>
 
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>3. Grid Approvals & Net-Metering</h4>
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>2. Quotations, Warranties & Binding Contracts</h4>
               <p>
-                Tejomay provides end-to-end liaison support for state electricity board (DISCOM) net-metering sanctions. However, the final timeline for meter replacement, transformer capacity allocation, and statutory inspection rests with the relevant state power distribution utility.
+                Information presented on this website does not constitute an open commercial offer. Binding commitments—including equipment specifications (Tier-1 Monocrystalline modules, inverters), 25-year performance warranties, EPC pricing, and completion timelines—are strictly governed by a formal, written agreement signed by authorized representatives of Tejomay Energies and the client.
               </p>
 
-              <h4 style={{ color: '#ffffff', marginTop: '1.5rem', marginBottom: '0.5rem' }}>4. Intellectual Property</h4>
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>3. DISCOM Net-Metering & Central Subsidies</h4>
               <p>
-                All brand marks, logos, imagery, and UI software architecture displayed on this website are the proprietary intellectual property of Tejomay Energies Ltd. Unauthorized scraping, replication, or distribution without prior written consent is strictly prohibited.
+                While Tejomay provides end-to-end liaison support for state electricity board (DISCOM) bi-directional net-metering sanctions and PM Surya Ghar subsidy documentation, statutory approval timelines, transformer quota allocations, and grid synchronization remain under the exclusive jurisdiction of the respective state power distribution utility.
+              </p>
+
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>4. Intellectual Property & Brand Protection</h4>
+              <p>
+                All trademarks, brand logos, technical calculator algorithms, imagery, and UI architecture on this website are the proprietary property of Tejomay Energies. Unauthorized copying, scraping, reverse-engineering, or commercial duplication is strictly prohibited under applicable intellectual property laws.
+              </p>
+
+              <h4 style={{ color: '#ffffff', marginTop: '1.25rem', marginBottom: '0.4rem' }}>5. Limitation of Liability & Governing Law</h4>
+              <p>
+                Tejomay Energies shall not be liable for any indirect, incidental, or consequential damages resulting from website use or reliance on preliminary online estimates. These terms shall be governed by and construed in accordance with the laws of India.
               </p>
             </div>
           )}
