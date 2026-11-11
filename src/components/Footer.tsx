@@ -72,19 +72,19 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
             <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6BAE23', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
               Contact Us
             </h4>
-            <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.7 }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                Metro Solar Tower, Sector 62
-              </span><br />
-              <a href="tel:+917447449534" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+            <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.65 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.45rem', marginBottom: '0.5rem' }}>
+                <img src="/location-icon.png" alt="Location" style={{ width: '16px', height: '16px', objectFit: 'contain', marginTop: '3px', flexShrink: 0 }} />
+                <span>Behind Police Station, Ram Lila Maidan, Sector M, N 7, Cidco, Chhatrapati Sambhajinagar, Maharashtra 431003, India</span>
+              </div>
+              <a href="tel:+917447449534" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.25rem' }}>
                 <img src="/call-icon.png" alt="Call" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
                 +91 744 744 9534
               </a><br />
-              <a href="mailto:tejomayenergies@gmail.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s' }}>
+              <a href="mailto:tejomayenergies@gmail.com" style={{ color: '#ffffff', textDecoration: 'none', transition: 'color 0.2s', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
                 ✉️ tejomayenergies@gmail.com
               </a>
-            </p>
+            </div>
             <button
               onClick={handleWhatsApp}
               className="btn-lime"
