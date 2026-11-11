@@ -87,7 +87,7 @@ export default function HeroSection({
     const attemptPlay = () => {
       if (video.paused) {
         video.muted = true;
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       }
     };
 
@@ -146,7 +146,9 @@ export default function HeroSection({
       <div className="hero-video-overlay" />
 
       {/* Top Left Official Tejomay Circular Logo */}
-      <div 
+      <a
+        href="https://www.tejomayenergies.com/"
+        aria-label="Tejomay Energies Home"
         className="hero-top-left-logo"
         style={{
           position: 'absolute',
@@ -154,9 +156,10 @@ export default function HeroSection({
           left: '2.5rem',
           zIndex: 40,
           cursor: 'pointer',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'inline-block',
+          textDecoration: 'none'
         }}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
         <img
           src="/tejomay-circle-logo.png"
@@ -181,7 +184,7 @@ export default function HeroSection({
             e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.55)';
           }}
         />
-      </div>
+      </a>
 
       {/* Hero Content Container: Positioned Bottom Left */}
       <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
@@ -194,7 +197,7 @@ export default function HeroSection({
         }}>
 
           {/* 3D Animated Headline */}
-          <h1 
+          <h1
             style={{
               fontFamily: 'var(--font-outfit)',
               fontSize: 'clamp(1.9rem, 6.5vw, 3.8rem)',
@@ -228,19 +231,19 @@ export default function HeroSection({
 
           {/* Action Buttons Positioned Lower Bottom Left */}
           <div className="hero-action-buttons-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-            <button 
-              onClick={handleWhatsAppConsult} 
-              className="btn-lime" 
+            <button
+              onClick={handleWhatsAppConsult}
+              className="btn-lime"
               style={{ padding: '0.85rem 1.8rem', fontSize: '0.92rem', borderRadius: '10px' }}
             >
               <span>Start Solar Installation ↗</span>
             </button>
-            
-            <button 
+
+            <button
               onClick={() => {
                 const el = document.getElementById('services');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }} 
+              }}
               className="btn-solid-white"
               style={{ padding: '0.85rem 1.8rem', fontSize: '0.92rem', borderRadius: '10px' }}
             >
@@ -263,13 +266,13 @@ export default function HeroSection({
           <img src="/lightning-icon.png" alt="Solar" style={{ width: '13px', height: '13px', objectFit: 'contain' }} />
           SOLAR CALCULATOR
         </span>
-        <span 
-          style={{ 
-            display: 'inline-block', 
-            fontSize: '1.25rem', 
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: '1.25rem',
             lineHeight: 1,
-            transform: isCalculatorOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
-            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+            transform: isCalculatorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
           ‹
@@ -278,7 +281,7 @@ export default function HeroSection({
 
       {/* Backdrop overlay when calculator is open inside Hero */}
       {isCalculatorOpen && (
-        <div 
+        <div
           onClick={() => setIsCalculatorOpen(false)}
           style={{
             position: 'absolute',
@@ -293,8 +296,8 @@ export default function HeroSection({
       {/* =========================================================================
          HERO-BOUNDED CALCULATOR DRAWER (Absolute to Hero - Positioned at right: 3.5rem)
          ========================================================================= */}
-      <div 
-        id="calculator" 
+      <div
+        id="calculator"
         className="calc-drawer"
         style={{
           transform: isCalculatorOpen ? 'translateX(0)' : 'translateX(140%)',
@@ -302,7 +305,7 @@ export default function HeroSection({
           pointerEvents: isCalculatorOpen ? 'auto' : 'none',
         }}
       >
-        
+
         {/* Calculator Header with Close Icon */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -388,7 +391,7 @@ export default function HeroSection({
 
         {/* Both Sliders: Monthly Bill AND Solar System Size (Stacked one below another) */}
         <div style={{ marginBottom: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-          
+
           {/* Slider 1: Monthly Electricity Bill */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>

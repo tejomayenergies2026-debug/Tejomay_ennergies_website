@@ -13,9 +13,10 @@ export default function TejomayLogo({ size = 'md' }: TejomayLogoProps) {
   const logoDimension = isSmall ? '80px' : isLarge ? '140px' : '110px';
 
   return (
-    <div 
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      style={{ display: 'inline-flex', alignItems: 'center', userSelect: 'none', cursor: 'pointer' }}
+    <a
+      href="https://www.tejomayenergies.com/"
+      aria-label="Tejomay Energies Home"
+      style={{ display: 'inline-flex', alignItems: 'center', userSelect: 'none', cursor: 'pointer', textDecoration: 'none' }}
     >
       {/* Official Tejomay Circular Logo */}
       <img
@@ -41,6 +42,6 @@ export default function TejomayLogo({ size = 'md' }: TejomayLogoProps) {
           e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
         }}
       />
-    </div>
+    </a>
   );
 }
