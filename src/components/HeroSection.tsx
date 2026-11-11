@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface HeroSectionProps {
   isCalculatorOpen?: boolean;
@@ -71,6 +71,49 @@ export default function HeroSection({
     { text: 'Tomorrow.', isBrand: false }
   ];
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Enforce Safari/iOS autoplay policy compliance (React omits the DOM muted attr)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', 'true');
+
+    const attemptPlay = () => {
+      if (video.paused) {
+        video.muted = true;
+        video.play().catch(() => {});
+      }
+    };
+
+    attemptPlay();
+    video.addEventListener('loadeddata', attemptPlay);
+    video.addEventListener('canplay', attemptPlay);
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') attemptPlay();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // Fallback for iOS Low Power Mode until first user interaction
+    const handleFirstInteraction = () => attemptPlay();
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true, passive: true });
+    window.addEventListener('pointerdown', handleFirstInteraction, { once: true, passive: true });
+
+    return () => {
+      video.removeEventListener('loadeddata', attemptPlay);
+      video.removeEventListener('canplay', attemptPlay);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('pointerdown', handleFirstInteraction);
+    };
+  }, []);
+
   return (
     <section id="hero" style={{
       position: 'relative',
@@ -81,26 +124,22 @@ export default function HeroSection({
       alignItems: 'flex-end',
       overflow: 'hidden'
     }}>
-      {/* Background Video with Instant Poster Fallback & Forced Autoplay */}
+      {/* Background Video with H.264 MP4 First for Safari Compatibility */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
+        disablePictureInPicture
         preload="auto"
         poster="/solar_res_3.jpg"
-        ref={(videoRef) => {
-          if (videoRef) {
-            videoRef.defaultMuted = true;
-            videoRef.muted = true;
-            videoRef.play().catch(() => {});
-          }
-        }}
+        aria-hidden="true"
         className="hero-video-bg"
       >
-        <source src="/solar-bg-instant.webm" type="video/webm" />
         <source src="/solar-bg-instant.mp4" type="video/mp4" />
         <source src="/solar-bg.mp4" type="video/mp4" />
+        <source src="/solar-bg-instant.webm" type="video/webm" />
       </video>
 
       {/* Video Dark Overlay */}

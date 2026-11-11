@@ -154,6 +154,8 @@ body {
   object-fit: cover;
   z-index: 0;
   filter: brightness(0.85) contrast(1.05);
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
 }
 
 .hero-video-overlay {
