@@ -103,8 +103,8 @@ export default function Footer({ onAdminTrigger, onOpenLegal }: FooterProps) {
               {[
                 { name: 'LinkedIn', url: 'https://www.linkedin.com/company/tejomay-energies' },
                 { name: 'Facebook', url: 'https://www.facebook.com/TejomayEnergies01/posts/pfbid0gckV3Rwt31wNmFutjhbevNdTENgEse6hJF4eNaYo98MGpmhsWh3fZGjFWowHjNkXl' },
-                { name: 'Instagram', url: 'https://www.instagram.com/p/Ddwc7A8EzwE/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==' },
-                { name: 'YouTube', url: 'https://youtube.com/shorts/22blAtyNJq8?feature=share' }
+                { name: 'Instagram', url: 'https://www.instagram.com/tejomay_energies/' },
+                { name: 'YouTube', url: 'https://www.youtube.com/@TejomayEnergies' }
               ].map((soc, idx) => (
                 <a
                   key={idx}

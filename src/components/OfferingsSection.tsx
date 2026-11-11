@@ -169,7 +169,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                 onClick={(e) => { e.stopPropagation(); setSelectedModalCard(card); }}
                 style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
               >
-                Details 🔍
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>Details <img src="/search-icon.png" alt="Details" style={{ width: '13px', height: '13px', objectFit: 'contain' }} /></span>
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); handleWhatsApp(card.title); }}
@@ -226,7 +226,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             <button onClick={() => setSelectedModalCard(card)}
               style={{ background: '#fff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.4rem 0.7rem', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-              Details 🔍
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>Details <img src="/search-icon.png" alt="Details" style={{ width: '13px', height: '13px', objectFit: 'contain' }} /></span>
             </button>
             {currentCategory === 'epc' && onOpenEpcDetailsPage ? (
               <button onClick={onOpenEpcDetailsPage}
@@ -323,7 +323,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                     onClick={() => setSelectedModalCard(card)}
                     style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.75rem 1.4rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
                   >
-                    <span>Details 🔍</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>Details <img src="/search-icon.png" alt="Details" style={{ width: '14px', height: '14px', objectFit: 'contain' }} /></span>
                   </button>
                   <button 
                     onClick={() => handleWhatsApp(card.title)} 
@@ -381,7 +381,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                   <div style={{ color: '#0b131f', fontWeight: 800, fontSize: '1rem' }}>{card.estimatedSavings}</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button onClick={() => setSelectedModalCard(card)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.5rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>Details 🔍</button>
+                  <button onClick={() => setSelectedModalCard(card)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.5rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>Details <img src="/search-icon.png" alt="Details" style={{ width: '13px', height: '13px', objectFit: 'contain' }} /></span></button>
                   <button onClick={() => handleWhatsApp(card.title)} className="btn-lime" style={{ padding: '0.5rem 0.85rem', fontSize: '0.75rem' }}>Book a Call ↗</button>
                 </div>
               </div>
@@ -462,7 +462,7 @@ export default function OfferingsSection({ onOpenEpcDetailsPage }: OfferingsSect
                   <div style={{ color: '#0b131f', fontWeight: 800, fontSize: '0.98rem', lineHeight: 1.2 }}>{card3.estimatedSavings}</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>
-                  <button onClick={() => setSelectedModalCard(card3)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.45rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>Details 🔍</button>
+                  <button onClick={() => setSelectedModalCard(card3)} style={{ background: '#ffffff', color: '#0b131f', border: '1.5px solid #0b131f', padding: '0.45rem 0.85rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>Details <img src="/search-icon.png" alt="Details" style={{ width: '13px', height: '13px', objectFit: 'contain' }} /></span></button>
                   <button onClick={() => handleWhatsApp(card3.title)} className="btn-lime" style={{ padding: '0.45rem 0.85rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>Book a Call ↗</button>
                 </div>
               </div>

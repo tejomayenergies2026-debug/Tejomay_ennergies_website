@@ -54,8 +54,8 @@ export default function HeroSection({
   const est25YrSavings = estAnnualSavings * 25;
 
   const handleWhatsAppConsult = () => {
-    const text = `Hi Tejomay! I used your Official Solar Savings Calculator.%0A- Sector: ${customerType.toUpperCase()}%0A- Monthly Bill: ₹${monthlyBill.toLocaleString('en-IN')}/mo%0A- Recommended Solar: ${systemKw} kW%0A- Roof Space Required: ${requiredRoofSqFt} sq ft%0A- Est. Annual Savings: ₹${Math.round(estAnnualSavings).toLocaleString('en-IN')}/yr%0A- 25-Year Savings: ₹${(est25YrSavings / 100000).toFixed(1)} Lakhs%0APlease arrange a free technical site survey!`;
-    window.open(`https://wa.me/917447449534?text=${text}`, '_blank', 'noopener,noreferrer');
+    const text = `Hi Tejomay! I am interested in your solar services and would like to schedule a consultation.`;
+    window.open(`https://wa.me/917447449534?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   };
 
   // Words sequence for Lego 3D Pop-in Animation
@@ -421,7 +421,7 @@ export default function HeroSection({
           <div>
             <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Shadow-free Rooftop</span>
             <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-outfit)' }}>
-              {requiredRoofSqFt} sq.ft
+              ~ {requiredRoofSqFt} sq.ft
             </div>
             <span style={{ fontSize: '0.65rem', color: '#64748b' }}>Mono PERC Tech</span>
           </div>
@@ -436,45 +436,37 @@ export default function HeroSection({
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '0.75rem',
-          marginBottom: '1.25rem'
+          marginBottom: 0
         }}>
           <div>
             <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>Est. Annual Savings</span>
             <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0b131f', fontFamily: 'var(--font-outfit)' }}>
-              ₹{estAnnualSavings.toLocaleString('en-IN')}
+              ~ ₹{estAnnualSavings.toLocaleString('en-IN')}
             </div>
-            <span style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 600 }}>₹{estMonthlySavings.toLocaleString('en-IN')} / mo</span>
+            <span style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 600 }}>~ ₹{estMonthlySavings.toLocaleString('en-IN')} / mo</span>
           </div>
 
           <div>
             <span style={{ fontSize: '0.65rem', color: '#1e293b', fontWeight: 700, textTransform: 'uppercase' }}>25-Year Lifetime Savings</span>
             <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0b131f', fontFamily: 'var(--font-outfit)' }}>
-              ₹{(est25YrSavings / 100000).toFixed(1)} Lakhs
+              ~ ₹{(est25YrSavings / 100000).toFixed(1)} Lakhs
             </div>
             <span style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 600 }}>Full 25-Yr System Life</span>
           </div>
         </div>
 
-        {/* WhatsApp Consult Button inside the Drawer */}
-        <button
-          onClick={handleWhatsAppConsult}
-          className="btn-lime"
-          style={{
-            width: '100%',
-            padding: '0.85rem 1rem',
-            borderRadius: '12px',
-            fontSize: '0.88rem',
-            fontWeight: 700,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem',
-            boxShadow: '0 8px 20px rgba(68, 217, 68, 0.3)'
-          }}
-        >
-          <img src="/call-icon.png" alt="WhatsApp" style={{ width: '16px', height: '16px', borderRadius: '50%' }} />
-          <span>Consult Solar Engineer ↗</span>
-        </button>
+        {/* Estimate Prediction Disclaimer */}
+        <p style={{
+          fontSize: '0.68rem',
+          color: '#64748b',
+          marginTop: '0.85rem',
+          marginBottom: 0,
+          lineHeight: 1.45,
+          textAlign: 'center',
+          fontStyle: 'italic'
+        }}>
+          * Values marked with ~ are estimated predictions and not to be taken as final figures.
+        </p>
 
       </div>
 
