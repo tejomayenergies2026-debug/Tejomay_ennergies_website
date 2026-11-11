@@ -73,27 +73,81 @@ export default function HeroSection({
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Enforce Safari/iOS autoplay policy compliance (React omits the DOM muted attr)
+  // Enforce Safari/iOS autoplay compliance and recover if CoreMedia hits edge challenge
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    let isDisposed = false;
+    let blobUrl: string | null = null;
+    let fallbackTried = false;
+    const abortController = new AbortController();
+
+    // Set required DOM attributes BEFORE assigning src so WebKit sees muted+playsinline on load
     video.defaultMuted = true;
     video.muted = true;
+    video.playsInline = true;
     video.setAttribute('muted', '');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('loop', '');
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', 'true');
 
     const attemptPlay = () => {
+      if (isDisposed) return;
+      video.muted = true;
       if (video.paused) {
-        video.muted = true;
-        video.play().catch(() => { });
+        video.play().catch(() => {});
       }
     };
 
+    const loadViaBlobFallback = async () => {
+      if (fallbackTried || isDisposed) return;
+      fallbackTried = true;
+
+      for (const candidate of ['/solar-bg-instant.mp4', '/solar-bg.mp4']) {
+        try {
+          const res = await fetch(candidate, {
+            credentials: 'same-origin',
+            signal: abortController.signal,
+          });
+          if (!res.ok) continue;
+          const contentType = res.headers.get('content-type') || '';
+          if (contentType.includes('text/html')) continue;
+
+          const buffer = await res.arrayBuffer();
+          if (isDisposed || buffer.byteLength < 10000) continue;
+
+          const blob = new Blob([buffer], { type: 'video/mp4' });
+          blobUrl = URL.createObjectURL(blob);
+          video.src = blobUrl;
+          video.load();
+          attemptPlay();
+          return;
+        } catch {
+          // Try next source candidate
+        }
+      }
+    };
+
+    const handleDirectError = () => {
+      void loadViaBlobFallback();
+    };
+
+    video.src = '/solar-bg-instant.mp4';
+    video.load();
     attemptPlay();
+
     video.addEventListener('loadeddata', attemptPlay);
     video.addEventListener('canplay', attemptPlay);
+    video.addEventListener('error', handleDirectError);
+
+    // If Safari CoreMedia stalls at HAVE_NOTHING (e.g. challenged Range request), load via fetch+blob
+    const stallTimer = window.setTimeout(() => {
+      if (!isDisposed && video.readyState === 0) {
+        void loadViaBlobFallback();
+      }
+    }, 1500);
 
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') attemptPlay();
@@ -106,11 +160,18 @@ export default function HeroSection({
     window.addEventListener('pointerdown', handleFirstInteraction, { once: true, passive: true });
 
     return () => {
+      isDisposed = true;
+      abortController.abort();
+      window.clearTimeout(stallTimer);
       video.removeEventListener('loadeddata', attemptPlay);
       video.removeEventListener('canplay', attemptPlay);
+      video.removeEventListener('error', handleDirectError);
       document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('touchstart', handleFirstInteraction);
       window.removeEventListener('pointerdown', handleFirstInteraction);
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
     };
   }, []);
 
@@ -124,7 +185,7 @@ export default function HeroSection({
       alignItems: 'flex-end',
       overflow: 'hidden'
     }}>
-      {/* Background Video with H.264 MP4 First for Safari Compatibility */}
+      {/* Background Video with H.264 MP4 and Safari Blob Fallback */}
       <video
         ref={videoRef}
         autoPlay
@@ -136,11 +197,7 @@ export default function HeroSection({
         poster="/solar_res_3.jpg"
         aria-hidden="true"
         className="hero-video-bg"
-      >
-        <source src="/solar-bg-instant.mp4" type="video/mp4" />
-        <source src="/solar-bg.mp4" type="video/mp4" />
-        <source src="/solar-bg-instant.webm" type="video/webm" />
-      </video>
+      />
 
       {/* Video Dark Overlay */}
       <div className="hero-video-overlay" />
