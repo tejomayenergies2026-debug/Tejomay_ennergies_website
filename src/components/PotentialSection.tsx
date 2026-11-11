@@ -74,9 +74,13 @@ export default function PotentialSection() {
                 fontWeight: 800,
                 fontSize: '0.82rem',
                 padding: '0.4rem 0.9rem',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem'
               }}>
-                🏙️ New Delhi NCR
+                <img src="/office-hub-icon.png" alt="" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                New Delhi NCR
               </span>
             </div>
 
@@ -212,9 +216,13 @@ export default function PotentialSection() {
                 fontWeight: 800,
                 fontSize: '0.82rem',
                 padding: '0.4rem 0.9rem',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem'
               }}>
-                🏙️ Mumbai, Maharashtra
+                <img src="/office-hub-icon.png" alt="" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                Mumbai, Maharashtra
               </span>
             </div>
 
