@@ -303,46 +303,47 @@ export default function HeroSection({
 
         {/* Sector Switcher (Residential vs Commercial) */}
         <div style={{ marginBottom: '1.25rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', background: '#f1f5f9', padding: '0.35rem', borderRadius: '10px' }}>
-            <button
-              type="button"
-              onClick={() => handleCustomerTypeChange('residential')}
-              style={{
-                padding: '0.55rem',
-                borderRadius: '8px',
-                border: 'none',
-                background: customerType === 'residential' ? '#0f172a' : 'transparent',
-                color: customerType === 'residential' ? '#ffffff' : '#64748b',
-                fontWeight: customerType === 'residential' ? 700 : 500,
-                fontSize: '0.78rem',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.4rem'
-              }}
-            >
-              <img src="/house-icon.png" alt="Residential" style={{ width: '15px', height: '15px', borderRadius: '3px' }} />
-              Residential Home
-            </button>
-            <button
-              type="button"
-              onClick={() => handleCustomerTypeChange('commercial')}
-              style={{
-                padding: '0.55rem',
-                borderRadius: '8px',
-                border: 'none',
-                background: customerType === 'commercial' ? '#0f172a' : 'transparent',
-                color: customerType === 'commercial' ? '#ffffff' : '#64748b',
-                fontWeight: customerType === 'commercial' ? 700 : 500,
-                fontSize: '0.78rem',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              🏢 Commercial / Factory
-            </button>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '0.5rem', background: '#f1f5f9', padding: '0.35rem', borderRadius: '10px' }}>
+            {([
+              { id: 'residential', label: 'Residential Home', icon: '/calc-home-icon.png' },
+              { id: 'commercial', label: 'Commercial / Factory', icon: '/calc-factory-icon.png' },
+            ] as const).map((sector) => {
+              const isActive = customerType === sector.id;
+              return (
+                <button
+                  key={sector.id}
+                  type="button"
+                  onClick={() => handleCustomerTypeChange(sector.id)}
+                  style={{
+                    width: '100%',
+                    height: '40px',
+                    padding: '0 0.35rem',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: isActive ? '#0f172a' : 'transparent',
+                    color: isActive ? '#ffffff' : '#64748b',
+                    fontWeight: 600,
+                    fontSize: '0.73rem',
+                    lineHeight: 1,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s ease, color 0.2s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.35rem'
+                  }}
+                >
+                  <img
+                    src={sector.icon}
+                    alt=""
+                    style={{ width: '14px', height: '14px', objectFit: 'contain', flexShrink: 0 }}
+                  />
+                  <span>{sector.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
